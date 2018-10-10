@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <PreferenceCategory
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:key="quick_order_preferences"
+        android:summary="@string/preferences_quick_order_summary"
+        android:title="@string/preferences_quick_order_title">
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="main"
+            android:summary=""
+            android:title="@string/preferences_quick_order_main_title" />
+        <CheckBoxPreference
+            android:dependency="main"
+            android:key="firstDependent"
+            android:summary="@string/preferences_quick_order_main_first_dependant_summary"
+            android:title="@string/preferences_quick_order_main_first_dependant_title" />
+        <CheckBoxPreference
+            android:dependency="main"
+            android:key="secondDependent"
+            android:summary="@string/preferences_quick_order_main_second_dependant_summary"
+            android:title="@string/preferences_quick_order_main_second_dependant_title" />
+    </PreferenceCategory>
+
+    <!--Any other categories include here-->
+
+</PreferenceScreen>

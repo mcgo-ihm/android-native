@@ -1,4 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">McGo</string>
     <string name="action_settings">Settings</string>
+
+    <!-- Drawer items -->
+    <string name="food_title">Food list</string>
+    <string name="favorite_title">Quick Order Food Set</string>
+
+    <!-- Food Item -->
+    <string name="item_image">Item Image</string>
+    <string name="item_price">0.00$</string>
+    <string name="add_to_cart">Add to Cart</string>
+    <string name="no_items">No items</string>
+
+    <!-- Items fragment menu -->
+    <string name="menu_set_quick_order">Set Quick Order</string>
+
+    <!-- User settings preferences -->
+    <string name="preferences_activity_label">Preferences</string>
+    <string name="preferences_quick_order_title">Quick Order</string>
+    <string name="preferences_quick_order_summary">Sets preferences about Quick Order feature</string>
+    <string name="preferences_quick_order_main_title">Enable</string>
+    <string name="preferences_quick_order_main_first_dependant_title">Vibration feedback</string>
+    <string name="preferences_quick_order_main_first_dependant_summary">Enable vibration feedback when quick order is performed</string>
+    <string name="preferences_quick_order_main_second_dependant_title">Audio feedback</string>
+    <string name="preferences_quick_order_main_second_dependant_summary">Enable audio feedback when quick order is performed</string>
+
 </resources>
