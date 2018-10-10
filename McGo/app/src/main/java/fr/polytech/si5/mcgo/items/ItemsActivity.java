@@ -1,9 +1,6 @@
 package fr.polytech.si5.mcgo.items;
 
-import android.content.Context;
 import android.content.Intent;
-import android.hardware.Sensor;
-import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -11,25 +8,19 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.ViewGroup;
 
+import fr.polytech.si5.mcgo.QuickOrderActivity;
 import fr.polytech.si5.mcgo.R;
 import fr.polytech.si5.mcgo.Utils.ActivityUtils;
-import fr.polytech.si5.mcgo.data.UserSettings;
 import fr.polytech.si5.mcgo.data.local.ItemsDataSource;
 import fr.polytech.si5.mcgo.favorite.FavoriteActivity;
-import fr.polytech.si5.mcgo.sensors.ShakeDetector;
 
-public class ItemsActivity extends AppCompatActivity {
+public class ItemsActivity extends QuickOrderActivity {
 
     private DrawerLayout mDrawerLayout;
     private ItemsPresenter mItemsPresenter;
-    private SensorManager mSensorManager;
-    private Sensor mAccelerometer;
-    private ShakeDetector mShakeDetector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,12 +44,12 @@ public class ItemsActivity extends AppCompatActivity {
         }
 
         // Set up items fragment.
-        ItemsFragment itemsFragment = (ItemsFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
+        ItemsFragment itemsFragment = (ItemsFragment) getSupportFragmentManager().findFragmentById(R.id.content_frame);
 
         if (itemsFragment == null) {
             // Create the fragment.
             itemsFragment = itemsFragment.newInstance();
-            ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), itemsFragment, R.id.contentFrame);
+            ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), itemsFragment, R.id.content_frame);
         }
 
         // Create the presenter.
@@ -68,19 +59,6 @@ public class ItemsActivity extends AppCompatActivity {
         fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action",
                 Snackbar.LENGTH_LONG).setAction("Action", null).show());
         fab.hide();
-
-        // Set up the shake sensor.
-        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        mShakeDetector = new ShakeDetector();
-        mShakeDetector.setOnShakeListener(new ShakeDetector.OnShakeListener() {
-            @Override
-            public void onShake(int count) {
-                if (UserSettings.mQuickOrderEnable) {
-                    handleShakeEvent(count);
-                }
-            }
-        });
     }
 
     @Override
@@ -125,16 +103,4 @@ public class ItemsActivity extends AppCompatActivity {
                     return true;
                 });
     }
-
-    // Sensor Event.
-
-    private void handleShakeEvent(int count) {
-        if (count == 3) {
-            // Order.
-        }
-        Snackbar.make(((ViewGroup) this.findViewById(android.R.id.content)).getChildAt(0),
-                "Quick Order Feedback", Snackbar.LENGTH_LONG).show();
-
-    }
-
 }

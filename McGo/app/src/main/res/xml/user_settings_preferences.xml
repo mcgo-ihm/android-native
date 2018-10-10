@@ -8,7 +8,7 @@
         android:key="quick_order_preferences"
         android:summary="@string/preferences_quick_order_summary"
         android:title="@string/preferences_quick_order_title">
-        <CheckBoxPreference
+        <SwitchPreference
             android:defaultValue="false"
             android:key="main"
             android:summary=""

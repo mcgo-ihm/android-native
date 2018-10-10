@@ -12,8 +12,8 @@ public class ShakeDetector implements SensorEventListener {
 
     // This has to be > to 1G (Earth gravity unit) to register a shake as such.
     private static final float SHAKE_THRESHOLD_GRAVITY = 2.7F;
-    private static final int SHAKE_SLOP_TIME_MS = 500;
-    private static final int SHAKE_COUNT_RESET_TIME_MS = 3000;
+    private static final int SHAKE_SLOP_TIME_MS = 100;
+    private static final int SHAKE_COUNT_RESET_TIME_MS = 500;
 
     private OnShakeListener mListener;
     private long mShakeTimestamp;

@@ -9,6 +9,7 @@
 
     <!-- List item -->
     <dimen name="list_item_padding">8dp</dimen>
+    <dimen name="list_item_large_margin">16dp</dimen>
 
     <!-- McGo Button -->
     <dimen name="fab_margin">16dp</dimen>
