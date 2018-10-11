@@ -76,7 +76,7 @@ public class UserSettingsFragment extends PreferenceFragment {
         }
 
         // Audio feedback preference
-        final CheckBoxPreference audioCheckBoxPreference = (CheckBoxPreference) findPreference("secondDependant");
+        final CheckBoxPreference audioCheckBoxPreference = (CheckBoxPreference) findPreference("secondDependent");
         if (audioCheckBoxPreference != null) {
             audioCheckBoxPreference.setOnPreferenceChangeListener((preference, newValue) -> {
                 prefs.edit().putBoolean(UserSettings.QUICK_ORDER_AUDIO_FEEDBACK, (Boolean) newValue).apply();

@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Vibrator;
@@ -23,6 +26,15 @@ public abstract class QuickOrderActivity extends AppCompatActivity {
     private ShakeDetector mShakeDetector;
     private Vibrator mVibrator;
 
+    // Maximum sound stream.
+    private static final int MAX_STREAMS = 5;
+    private static final int STREAM_TYPE = AudioManager.STREAM_MUSIC;
+    private SoundPool mSoundPool;
+    private AudioManager mAudioManager;
+    private boolean mLoaded;
+    private float mVolume;
+    private int mQuickOrderNotification;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,8 +53,48 @@ public abstract class QuickOrderActivity extends AppCompatActivity {
             }
         });
 
-        // Set up the vibrator
+        // Set up the vibrator.
         mVibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+
+        // AudioManager audio settings for adjusting the volume.
+        mAudioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
+
+        // Current volume Index of particular stream type.
+        float currentVolumeIndex = (float) mAudioManager.getStreamVolume(STREAM_TYPE);
+
+        // Get the maximum volume index for a particular stream type.
+        float maxVolumeIndex = (float) mAudioManager.getStreamMaxVolume(STREAM_TYPE);
+
+        // Volume (0 --> 1)
+        this.mVolume = currentVolumeIndex / maxVolumeIndex;
+
+        // Suggests an audio stream whose volume should be changed by the hardware volume controls.
+        this.setVolumeControlStream(STREAM_TYPE);
+
+        if (Build.VERSION.SDK_INT >= 21) {
+            AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_NOTIFICATION_EVENT)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .build();
+
+            SoundPool.Builder builder = new SoundPool.Builder();
+            builder.setAudioAttributes(audioAttributes).setMaxStreams(MAX_STREAMS);
+
+            this.mSoundPool = builder.build();
+        } else {
+            // SoundPool(int maxStreams, int streamType, int srcQuality)
+            this.mSoundPool = new SoundPool(MAX_STREAMS, AudioManager.STREAM_NOTIFICATION, 0);
+        }
+
+        // When Sound Pool load complete.
+        this.mSoundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+            @Override
+            public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
+                mLoaded = true;
+            }
+        });
+
+        this.mQuickOrderNotification = this.mSoundPool.load(this, R.raw.quick_order_notification, 1);
     }
 
     @Override
@@ -70,7 +122,7 @@ public abstract class QuickOrderActivity extends AppCompatActivity {
             }
 
             Snackbar.make(((ViewGroup) this.findViewById(android.R.id.content)).getChildAt(0),
-                    "Quick Order Feedback", Snackbar.LENGTH_LONG).show();
+                    "Quick Order Succeeded", Snackbar.LENGTH_LONG).show();
         }
     }
 
@@ -83,6 +135,13 @@ public abstract class QuickOrderActivity extends AppCompatActivity {
     }
 
     private void playAudioFeedback() {
+        if (mLoaded) {
+            System.out.println("################################# PLAY ##################################");
+            float leftVolume = mVolume;
+            float rightVolume = mVolume;
 
+            // Play sound objects destroyed. Returns the ID of the new stream.
+            int streamId = this.mSoundPool.play(this.mQuickOrderNotification, leftVolume, rightVolume, 1, 0, 1f);
+        }
     }
 }

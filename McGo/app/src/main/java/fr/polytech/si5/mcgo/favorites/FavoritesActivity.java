@@ -1,4 +1,4 @@
-package fr.polytech.si5.mcgo.items;
+package fr.polytech.si5.mcgo.favorites;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,9 +16,12 @@ import fr.polytech.si5.mcgo.R;
 import fr.polytech.si5.mcgo.Utils.ActivityUtils;
 import fr.polytech.si5.mcgo.data.Constants;
 import fr.polytech.si5.mcgo.data.local.ItemsDataSource;
-import fr.polytech.si5.mcgo.favorites.FavoritesActivity;
+import fr.polytech.si5.mcgo.items.ItemsActivity;
+import fr.polytech.si5.mcgo.items.ItemsFragment;
+import fr.polytech.si5.mcgo.items.ItemsPresenter;
+import fr.polytech.si5.mcgo.orders.OrdersActivity;
 
-public class ItemsActivity extends QuickOrderActivity {
+public class FavoritesActivity extends QuickOrderActivity {
 
     private DrawerLayout mDrawerLayout;
     private ItemsPresenter mItemsPresenter;
@@ -51,7 +54,7 @@ public class ItemsActivity extends QuickOrderActivity {
             // Create the fragment.
             itemsFragment = itemsFragment.newInstance();
             Bundle bundle = new Bundle();
-            bundle.putBoolean(Constants.FRAGMENT_BUNDLE_QUICK_ORDER_KEY, true);
+            bundle.putBoolean(Constants.FRAGMENT_BUNDLE_QUICK_ORDER_KEY, false);
             itemsFragment.setArguments(bundle);
             ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), itemsFragment, R.id.content_frame);
         }
@@ -68,7 +71,7 @@ public class ItemsActivity extends QuickOrderActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        mItemsPresenter.loadDataSource(ItemsDataSource.itemsDataSource);
+        mItemsPresenter.loadDataSource(ItemsDataSource.quickOrderItemsDataSource);
     }
 
     @Override
@@ -89,13 +92,19 @@ public class ItemsActivity extends QuickOrderActivity {
     protected void setupDrawerContent(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(
                 menuItem -> {
+                    Intent intent;
+
                     switch (menuItem.getItemId()) {
                         case R.id.food_navigation_menu_item:
-                            // Do nothing, we're already on that screen
+                            intent = new Intent(FavoritesActivity.this, ItemsActivity.class);
+                            startActivity(intent);
+                            break;
+                        case R.id.orders_navigation_menu_item:
+                            intent = new Intent(FavoritesActivity.this, OrdersActivity.class);
+                            //startActivity(intent); // Not implemented yet - Expandable View
                             break;
                         case R.id.favorite_navigation_menu_item:
-                            Intent intent = new Intent(ItemsActivity.this, FavoritesActivity.class);
-                            startActivity(intent);
+                            // Do nothing, we're already on that screen
                             break;
                         default:
                             break;

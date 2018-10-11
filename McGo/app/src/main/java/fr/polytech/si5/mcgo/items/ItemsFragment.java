@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,6 +27,7 @@ import java.util.Locale;
 import fr.polytech.si5.mcgo.R;
 import fr.polytech.si5.mcgo.data.Constants;
 import fr.polytech.si5.mcgo.data.Item;
+import fr.polytech.si5.mcgo.data.local.ItemsDataSource;
 import fr.polytech.si5.mcgo.settings.UserSettingsActivity;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -65,13 +67,15 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
 
     private ItemsAdapter mListAdapter;
     private LinearLayout mItemsView;
-    boolean mQuickOrderFragment = false;
     private LinearLayout mNoItemsView;
     private ImageView mNoItemImage;
     private TextView mNoItemTextView;
     private ListView mListView;
+
+    private boolean mQuickOrderFragment = false;
     private boolean mEnableQuickOrderSelection = false;
     private int mQuickOrderSelectedCounter = 0;
+    private List<Item> itemsForQuickOrder;
 
     public ItemsFragment() {
         // Requires empty public constructor.
@@ -91,6 +95,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
         }
 
         mListAdapter = new ItemsAdapter(new ArrayList<>(0), mItemListener, mQuickOrderFragment);
+        itemsForQuickOrder = new ArrayList<>();
     }
 
     @Override
@@ -128,7 +133,13 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_set_quick_order:
-                // Set quick order with the set of selected items
+                // Set quick order
+                ItemsDataSource.quickOrderItemsDataSource.clear();
+                ItemsDataSource.quickOrderItemsDataSource.addAll(itemsForQuickOrder);
+                resetQuickOrderSelection();
+                Snackbar.make(((ViewGroup) getActivity().findViewById(android.R.id.content)).getChildAt(0),
+                        "Quick Order Food Set saved", Snackbar.LENGTH_LONG).show();
+                break;
             case R.id.menu_preferences:
                 // Load preferences activity
                 Intent intent = new Intent(getContext(), UserSettingsActivity.class);
@@ -141,7 +152,21 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.items_fragment_menu, menu);
-        menu.getItem(0).setEnabled(false);
+
+        if (mQuickOrderFragment) {
+            menu.getItem(0).setEnabled(false);
+        } else {
+            menu.getItem(0).setVisible(false);
+        }
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        if (mEnableQuickOrderSelection && mQuickOrderSelectedCounter > 0) {
+            menu.getItem(0).setEnabled(true);
+        } else {
+            menu.getItem(0).setEnabled(false);
+        }
     }
 
     @Override
@@ -167,6 +192,9 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
             mEnableQuickOrderSelection = false;
             mListAdapter.setEnableQuickOrderSelection(false);
             updateViewsQuickOrder();
+
+            // Safe clear
+            itemsForQuickOrder.clear();
         }
     }
 
@@ -181,6 +209,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
                     quickOrderCB.setVisibility(View.VISIBLE);
                 } else {
                     quickOrderCB.setVisibility(View.GONE);
+                    quickOrderCB.setChecked(false);
                 }
             }
         }
@@ -192,15 +221,33 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
 
         if (item.getQuickOrderSelect() && mQuickOrderSelectedCounter == 0) {
             mQuickOrderSelectedCounter++;
+            itemsForQuickOrder.add(item);
         } else if (item.getQuickOrderSelect()) {
             mQuickOrderSelectedCounter++;
+            itemsForQuickOrder.add(item);
         } else {
             mQuickOrderSelectedCounter--;
+
+            if (itemsForQuickOrder.contains(item)) {
+                itemsForQuickOrder.remove(item);
+            }
 
             if (mQuickOrderSelectedCounter == 0) {
                 enableQuickOrderSelection();
             }
         }
+
+        getActivity().invalidateOptionsMenu();
+    }
+
+    private void resetQuickOrderSelection() {
+        for (Item i : itemsForQuickOrder) {
+            i.quickOrderSelect();
+        }
+
+        mQuickOrderSelectedCounter = 0;
+        enableQuickOrderSelection();
+        getActivity().invalidateOptionsMenu();
     }
 
     public interface ItemListener {
@@ -222,14 +269,14 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
         private boolean mQuickOrderAdapter;
         private boolean mEnableQuickOrderSelection;
 
-        public ItemsAdapter(List<Item> items, ItemListener itemListener, boolean isQuickOrderAdapter) {
+        ItemsAdapter(List<Item> items, ItemListener itemListener, boolean isQuickOrderAdapter) {
             setList(items);
             mItemListener = itemListener;
             mQuickOrderAdapter = isQuickOrderAdapter;
             mEnableQuickOrderSelection = false;
         }
 
-        public void replaceData(List<Item> items) {
+        void replaceData(List<Item> items) {
             setList(items);
             notifyDataSetChanged();
         }
@@ -312,7 +359,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
             return view;
         }
 
-        public void setEnableQuickOrderSelection(boolean enable) {
+        void setEnableQuickOrderSelection(boolean enable) {
             mEnableQuickOrderSelection = enable;
         }
 
@@ -325,7 +372,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
             TextView itemPrice;
             Button addToCart;
 
-            public ViewHolder(View view) {
+            ViewHolder(View view) {
                 //view.setClipToOutline(true); // For round borders.
 
                 quickOrderCB = (CheckBox) view.findViewById(R.id.item_set_quick_order);
