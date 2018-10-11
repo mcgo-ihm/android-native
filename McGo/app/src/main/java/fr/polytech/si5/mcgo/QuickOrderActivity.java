@@ -43,8 +43,6 @@ public abstract class QuickOrderActivity extends AppCompatActivity {
 
         // Set up the vibrator
         mVibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-
-
     }
 
     @Override

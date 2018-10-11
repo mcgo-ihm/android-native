@@ -12,6 +12,8 @@ public final class Item {
     private final String mDescription;
     private final double mPrice;
 
+    private boolean mQuickOrderSelect;
+
     /**
      * Use this constructor to create a new Item.
      *
@@ -25,6 +27,8 @@ public final class Item {
         mName = name;
         mDescription = description;
         mPrice = price;
+
+        mQuickOrderSelect = false;
     }
 
     @NonNull
@@ -45,6 +49,15 @@ public final class Item {
     @NonNull
     public Double getPrice() {
         return mPrice;
+    }
+
+    @NonNull
+    public Boolean getQuickOrderSelect() {
+        return mQuickOrderSelect;
+    }
+
+    public void quickOrderSelect() {
+        mQuickOrderSelect = !mQuickOrderSelect;
     }
 
     @Override

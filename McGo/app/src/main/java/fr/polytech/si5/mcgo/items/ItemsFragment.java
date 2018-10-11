@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Locale;
 
 import fr.polytech.si5.mcgo.R;
+import fr.polytech.si5.mcgo.data.Constants;
 import fr.polytech.si5.mcgo.data.Item;
 import fr.polytech.si5.mcgo.settings.UserSettingsActivity;
 
@@ -35,6 +36,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class ItemsFragment extends Fragment implements ItemsContract.View {
 
     private ItemsContract.Presenter mPresenter;
+
     /**
      * Listener for clicks on items in the ListView.
      */
@@ -46,6 +48,11 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
         }
 
         @Override
+        public void onItemLongClick(Item clickedItem) {
+            mPresenter.enableQuickOrderSelection(clickedItem);
+        }
+
+        @Override
         public void onAddToCartItemClick(Item clickedItem) {
             mPresenter.addToCart(clickedItem);
         }
@@ -54,13 +61,17 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
         public void onQuickOrderItemClick(Item clickedItem, boolean isChecked) {
             mPresenter.selectItemForQuickOrder(clickedItem);
         }
-
     };
+
     private ItemsAdapter mListAdapter;
     private LinearLayout mItemsView;
+    boolean mQuickOrderFragment = false;
     private LinearLayout mNoItemsView;
     private ImageView mNoItemImage;
     private TextView mNoItemTextView;
+    private ListView mListView;
+    private boolean mEnableQuickOrderSelection = false;
+    private int mQuickOrderSelectedCounter = 0;
 
     public ItemsFragment() {
         // Requires empty public constructor.
@@ -73,7 +84,13 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mListAdapter = new ItemsAdapter(new ArrayList<>(0), mItemListener);
+        Bundle args = getArguments();
+
+        if (args != null) {
+            mQuickOrderFragment = args.getBoolean(Constants.FRAGMENT_BUNDLE_QUICK_ORDER_KEY, false);
+        }
+
+        mListAdapter = new ItemsAdapter(new ArrayList<>(0), mItemListener, mQuickOrderFragment);
     }
 
     @Override
@@ -93,8 +110,8 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
         View root = inflater.inflate(R.layout.items_frag, container, false);
 
         // Set up items view
-        ListView listView = (ListView) root.findViewById(R.id.items_list);
-        listView.setAdapter(mListAdapter);
+        mListView = (ListView) root.findViewById(R.id.items_list);
+        mListView.setAdapter(mListAdapter);
         mItemsView = (LinearLayout) root.findViewById(R.id.items_linear_layout);
 
         // Set up no items view
@@ -140,9 +157,57 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
         mNoItemsView.setVisibility(View.GONE);
     }
 
+    @Override
+    public void enableQuickOrderSelection() {
+        if (!mEnableQuickOrderSelection) {
+            mEnableQuickOrderSelection = true;
+            mListAdapter.setEnableQuickOrderSelection(true);
+            updateViewsQuickOrder();
+        } else if (mQuickOrderSelectedCounter == 0) {
+            mEnableQuickOrderSelection = false;
+            mListAdapter.setEnableQuickOrderSelection(false);
+            updateViewsQuickOrder();
+        }
+    }
+
+    private void updateViewsQuickOrder() {
+        for (int i = 0; i < mListView.getCount(); ++i) {
+            View itemView = mListView.getChildAt(i);
+
+            if (itemView != null) {
+                CheckBox quickOrderCB = (CheckBox) itemView.findViewById(R.id.item_set_quick_order);
+
+                if (mEnableQuickOrderSelection) {
+                    quickOrderCB.setVisibility(View.VISIBLE);
+                } else {
+                    quickOrderCB.setVisibility(View.GONE);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void selectQuickOrderItem(Item item) {
+        item.quickOrderSelect();
+
+        if (item.getQuickOrderSelect() && mQuickOrderSelectedCounter == 0) {
+            mQuickOrderSelectedCounter++;
+        } else if (item.getQuickOrderSelect()) {
+            mQuickOrderSelectedCounter++;
+        } else {
+            mQuickOrderSelectedCounter--;
+
+            if (mQuickOrderSelectedCounter == 0) {
+                enableQuickOrderSelection();
+            }
+        }
+    }
+
     public interface ItemListener {
 
         void onItemClick(Item clickedItem);
+
+        void onItemLongClick(Item clickedItem);
 
         void onAddToCartItemClick(Item clickedItem);
 
@@ -154,9 +219,14 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
         private List<Item> mItems;
         private ItemListener mItemListener;
 
-        public ItemsAdapter(List<Item> items, ItemListener itemListener) {
+        private boolean mQuickOrderAdapter;
+        private boolean mEnableQuickOrderSelection;
+
+        public ItemsAdapter(List<Item> items, ItemListener itemListener, boolean isQuickOrderAdapter) {
             setList(items);
             mItemListener = itemListener;
+            mQuickOrderAdapter = isQuickOrderAdapter;
+            mEnableQuickOrderSelection = false;
         }
 
         public void replaceData(List<Item> items) {
@@ -185,48 +255,86 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
 
         @Override
         public View getView(int i, View view, ViewGroup viewGroup) {
-            View rowView = view;
-            //view.setClipToOutline(true); // For round borders.
+            ViewHolder viewHolder;
 
-            if (rowView == null) {
+            if (view == null) {
                 LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-                rowView = inflater.inflate(R.layout.food_item, viewGroup, false);
+                view = inflater.inflate(R.layout.food_item, viewGroup, false);
+                viewHolder = new ViewHolder(view);
+                view.setTag(viewHolder);
+            } else {
+                viewHolder = (ViewHolder) view.getTag();
             }
 
             final Item item = getItem(i);
 
-            CheckBox quickOrderCB = (CheckBox) rowView.findViewById(R.id.item_set_quick_order);
-            ImageView itemImage = (ImageView) rowView.findViewById(R.id.item_image);
-            TextView itemTitle = (TextView) rowView.findViewById(R.id.item_title);
-            View priceCartView = rowView.findViewById(R.id.price_cart_layout);
-            TextView itemPrice = priceCartView.findViewById(R.id.item_price);
-            Button addToCart = (Button) priceCartView.findViewById(R.id.item_order_button);
+            viewHolder.itemTitle.setText(item.getName());
+            viewHolder.itemPrice.setText(String.format(Locale.ENGLISH, "%.2f$", item.getPrice()));
 
-            itemTitle.setText(item.getName());
-            itemPrice.setText(String.format(Locale.ENGLISH, "%.2f$", item.getPrice()));
-
-            quickOrderCB.setOnClickListener(new View.OnClickListener() {
+            viewHolder.quickOrderCB.setChecked(item.getQuickOrderSelect());
+            viewHolder.quickOrderCB.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mItemListener.onQuickOrderItemClick(item, quickOrderCB.isChecked());
+                    mItemListener.onQuickOrderItemClick(item, viewHolder.quickOrderCB.isChecked());
                 }
             });
 
-            addToCart.setOnClickListener(new View.OnClickListener() {
+            viewHolder.addToCart.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     mItemListener.onAddToCartItemClick(item);
                 }
             });
 
-            rowView.setOnClickListener(new View.OnClickListener() {
+            view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     mItemListener.onItemClick(item);
                 }
             });
 
-            return rowView;
+            if (mQuickOrderAdapter) {
+                view.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        mItemListener.onItemLongClick(item);
+                        return true;
+                    }
+                });
+            }
+
+            if (mEnableQuickOrderSelection) {
+                viewHolder.quickOrderCB.setVisibility(View.VISIBLE);
+            } else {
+                viewHolder.quickOrderCB.setVisibility(View.GONE);
+            }
+
+            return view;
+        }
+
+        public void setEnableQuickOrderSelection(boolean enable) {
+            mEnableQuickOrderSelection = enable;
+        }
+
+        private class ViewHolder {
+
+            CheckBox quickOrderCB;
+            ImageView itemImage;
+            TextView itemTitle;
+            View priceCartView;
+            TextView itemPrice;
+            Button addToCart;
+
+            public ViewHolder(View view) {
+                //view.setClipToOutline(true); // For round borders.
+
+                quickOrderCB = (CheckBox) view.findViewById(R.id.item_set_quick_order);
+                itemImage = (ImageView) view.findViewById(R.id.item_image);
+                itemTitle = (TextView) view.findViewById(R.id.item_title);
+                priceCartView = view.findViewById(R.id.price_cart_layout);
+                itemPrice = priceCartView.findViewById(R.id.item_price);
+                addToCart = (Button) priceCartView.findViewById(R.id.item_order_button);
+            }
         }
     }
 }

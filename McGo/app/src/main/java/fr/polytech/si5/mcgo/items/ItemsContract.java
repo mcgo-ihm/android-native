@@ -17,6 +17,10 @@ public interface ItemsContract {
 
         void showItems(List<Item> items);
 
+        void enableQuickOrderSelection();
+
+        void selectQuickOrderItem(Item items);
+
     }
 
     interface Presenter extends BasePresenter {
@@ -26,6 +30,8 @@ public interface ItemsContract {
         void openItemDetails(@NonNull Item requestedItem);
 
         void selectItemForQuickOrder(@NonNull Item requestedItem);
+
+        void enableQuickOrderSelection(@NonNull Item requestedItem);
 
         void addToCart(@NonNull Item requestedItem);
 

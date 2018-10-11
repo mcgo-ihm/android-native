@@ -5,6 +5,7 @@
     android:layout_height="?android:attr/listPreferredItemHeightLarge"
     android:background="@drawable/touch_feedback"
     android:gravity="center"
+    android:longClickable="true"
     android:orientation="horizontal"
     android:paddingBottom="@dimen/list_item_padding"
     android:paddingLeft="@dimen/activity_small_horizontal_margin"

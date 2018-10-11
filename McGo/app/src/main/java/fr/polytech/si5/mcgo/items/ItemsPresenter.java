@@ -38,7 +38,12 @@ public class ItemsPresenter implements ItemsContract.Presenter {
 
     @Override
     public void selectItemForQuickOrder(@NonNull Item requestedItem) {
+        mItemsView.selectQuickOrderItem(requestedItem);
+    }
 
+    @Override
+    public void enableQuickOrderSelection(@NonNull Item requestedItem) {
+        mItemsView.enableQuickOrderSelection();
     }
 
     @Override

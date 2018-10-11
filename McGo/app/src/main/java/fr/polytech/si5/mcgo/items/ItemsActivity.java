@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import fr.polytech.si5.mcgo.QuickOrderActivity;
 import fr.polytech.si5.mcgo.R;
 import fr.polytech.si5.mcgo.Utils.ActivityUtils;
+import fr.polytech.si5.mcgo.data.Constants;
 import fr.polytech.si5.mcgo.data.local.ItemsDataSource;
 import fr.polytech.si5.mcgo.favorite.FavoriteActivity;
 
@@ -49,6 +50,9 @@ public class ItemsActivity extends QuickOrderActivity {
         if (itemsFragment == null) {
             // Create the fragment.
             itemsFragment = itemsFragment.newInstance();
+            Bundle bundle = new Bundle();
+            bundle.putBoolean(Constants.FRAGMENT_BUNDLE_QUICK_ORDER_KEY, true);
+            itemsFragment.setArguments(bundle);
             ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), itemsFragment, R.id.content_frame);
         }
 
