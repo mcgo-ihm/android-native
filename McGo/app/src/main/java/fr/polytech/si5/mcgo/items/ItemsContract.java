@@ -17,9 +17,13 @@ public interface ItemsContract {
 
         void showItems(List<Item> items);
 
+        void showNoItems();
+
         void enableQuickOrderSelection();
 
         void selectQuickOrderItem(Item items);
+
+        void addToCart();
 
     }
 

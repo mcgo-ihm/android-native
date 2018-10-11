@@ -1,6 +1,8 @@
 package fr.polytech.si5.mcgo.items;
 
 import android.content.Intent;
+import android.graphics.drawable.LayerDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -25,6 +27,7 @@ import java.util.List;
 import java.util.Locale;
 
 import fr.polytech.si5.mcgo.R;
+import fr.polytech.si5.mcgo.Utils.ActivityUtils;
 import fr.polytech.si5.mcgo.data.Constants;
 import fr.polytech.si5.mcgo.data.Item;
 import fr.polytech.si5.mcgo.data.local.ItemsDataSource;
@@ -72,6 +75,9 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     private TextView mNoItemTextView;
     private ListView mListView;
 
+    private LayerDrawable mIcon;
+    private int mNotificationsCount = 0;
+
     private boolean mQuickOrderFragment = false;
     private boolean mEnableQuickOrderSelection = false;
     private int mQuickOrderSelectedCounter = 0;
@@ -96,6 +102,10 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
 
         mListAdapter = new ItemsAdapter(new ArrayList<>(0), mItemListener, mQuickOrderFragment);
         itemsForQuickOrder = new ArrayList<>();
+
+
+        // Run a task to fetch the notifications count.
+        new FetchCountTask().execute();
     }
 
     @Override
@@ -140,6 +150,9 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
                 Snackbar.make(((ViewGroup) getActivity().findViewById(android.R.id.content)).getChildAt(0),
                         "Quick Order Food Set saved", Snackbar.LENGTH_LONG).show();
                 break;
+            case R.id.menu_cart:
+                // Do nothing atm
+                break;
             case R.id.menu_preferences:
                 // Load preferences activity
                 Intent intent = new Intent(getContext(), UserSettingsActivity.class);
@@ -152,6 +165,13 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.items_fragment_menu, menu);
+
+        // Get the notifications MenuItem and its LayerDrawable (layer-list).
+        MenuItem item = menu.findItem(R.id.menu_cart);
+        mIcon = (LayerDrawable) item.getIcon();
+
+        // Update LayerDrawable's BadgeDrawable.
+        ActivityUtils.setBadgeCount(getContext(), mIcon, mNotificationsCount);
 
         if (mQuickOrderFragment) {
             menu.getItem(0).setEnabled(false);
@@ -180,6 +200,12 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
 
         mItemsView.setVisibility(View.VISIBLE);
         mNoItemsView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showNoItems() {
+        mItemsView.setVisibility(View.GONE);
+        mNoItemsView.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -248,6 +274,14 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
         mQuickOrderSelectedCounter = 0;
         enableQuickOrderSelection();
         getActivity().invalidateOptionsMenu();
+    }
+
+    @Override
+    public void addToCart() {
+        mNotificationsCount++;
+
+        // Update LayerDrawable's BadgeDrawable.
+        ActivityUtils.setBadgeCount(getContext(), mIcon, mNotificationsCount);
     }
 
     public interface ItemListener {
@@ -382,6 +416,34 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
                 itemPrice = priceCartView.findViewById(R.id.item_price);
                 addToCart = (Button) priceCartView.findViewById(R.id.item_order_button);
             }
+        }
+    }
+
+    /**
+     * Updates the count of notifications in the ActionBar.
+     */
+    private void updateNotificationsBadge(int count) {
+        mNotificationsCount = count;
+
+        // Force the ActionBar to relayout its MenuItems.
+        // onCreateOptionsMenu(Menu) will be called again.
+        getActivity().invalidateOptionsMenu();
+    }
+
+    /**
+     * Sample AsyncTask to fetch the notifications count.
+     */
+    class FetchCountTask extends AsyncTask<Void, Void, Integer> {
+
+        @Override
+        protected Integer doInBackground(Void... params) {
+            // Example count. This is where you'd query your data store for the actual count.
+            return ItemsDataSource.itemsToOrder.size();
+        }
+
+        @Override
+        public void onPostExecute(Integer count) {
+            updateNotificationsBadge(count);
         }
     }
 }

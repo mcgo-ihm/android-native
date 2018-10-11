@@ -2,6 +2,8 @@
 <resources>
 
     <string name="app_name">McGo</string>
+    <string name="orders_activity">Orders</string>
+    <string name="favorite_activity">Quick Order</string>
     <string name="action_settings">Settings</string>
 
     <!-- Drawer items -->

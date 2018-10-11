@@ -7,6 +7,9 @@
     <dimen name="activity_small_horizontal_margin">8dp</dimen>
     <dimen name="activity_small_vertical_margin">8dp</dimen>
 
+    <!-- Badge -->
+    <dimen name="badge_text">10sp</dimen>
+
     <!-- List item -->
     <dimen name="list_item_padding">8dp</dimen>
     <dimen name="list_item_large_margin">16dp</dimen>

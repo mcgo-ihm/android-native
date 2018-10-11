@@ -9,6 +9,7 @@ public final class ItemsDataSource {
 
     public static final List<Item> itemsDataSource = new ArrayList<>();
     public static final List<Item> quickOrderItemsDataSource = new ArrayList<>();
+    public static final List<Item> itemsToOrder = new ArrayList<>();
 
     static {
         int counter = 1;

@@ -17,6 +17,7 @@ import fr.polytech.si5.mcgo.Utils.ActivityUtils;
 import fr.polytech.si5.mcgo.data.Constants;
 import fr.polytech.si5.mcgo.data.local.ItemsDataSource;
 import fr.polytech.si5.mcgo.favorites.FavoritesActivity;
+import fr.polytech.si5.mcgo.orders.OrdersActivity;
 
 public class ItemsActivity extends QuickOrderActivity {
 
@@ -89,12 +90,18 @@ public class ItemsActivity extends QuickOrderActivity {
     protected void setupDrawerContent(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(
                 menuItem -> {
+                    Intent intent;
+
                     switch (menuItem.getItemId()) {
                         case R.id.food_navigation_menu_item:
                             // Do nothing, we're already on that screen
                             break;
+                        case R.id.orders_navigation_menu_item:
+                            intent = new Intent(ItemsActivity.this, OrdersActivity.class);
+                            //startActivity(intent); // Not implemented yet - Expandable View
+                            break;
                         case R.id.favorite_navigation_menu_item:
-                            Intent intent = new Intent(ItemsActivity.this, FavoritesActivity.class);
+                            intent = new Intent(ItemsActivity.this, FavoritesActivity.class);
                             startActivity(intent);
                             break;
                         default:

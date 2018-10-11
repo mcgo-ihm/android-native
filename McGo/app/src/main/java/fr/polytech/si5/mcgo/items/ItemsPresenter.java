@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import java.util.List;
 
 import fr.polytech.si5.mcgo.data.Item;
+import fr.polytech.si5.mcgo.data.local.ItemsDataSource;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -28,7 +29,11 @@ public class ItemsPresenter implements ItemsContract.Presenter {
 
     @Override
     public void loadDataSource(@NonNull List<Item> requestedDataSource) {
-        mItemsView.showItems(requestedDataSource);
+        if (requestedDataSource.isEmpty()) {
+            mItemsView.showNoItems();
+        } else {
+            mItemsView.showItems(requestedDataSource);
+        }
     }
 
     @Override
@@ -48,6 +53,7 @@ public class ItemsPresenter implements ItemsContract.Presenter {
 
     @Override
     public void addToCart(@NonNull Item requestedItem) {
-
+        ItemsDataSource.itemsToOrder.add(requestedItem);
+        mItemsView.addToCart();
     }
 }
