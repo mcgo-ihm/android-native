@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="true"
+    android:fitsSystemWindows="false"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/cart_toolbar"
+        layout="@layout/toolbar" />
+
+    <FrameLayout
+        android:id="@+id/content_frame"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_above="@id/total_items_price"
+        app:layout_constraintBottom_toTopOf="@+id/total_items_price"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cart_toolbar"
+        app:layout_constraintVertical_weight="8" />
+
+    <include
+        android:id="@+id/crouton_handle"
+        layout="@layout/crouton_handle" />
+
+    <TextView
+        android:id="@+id/total_items_price"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="8dp"
+        android:gravity="center_vertical"
+        android:paddingEnd="@dimen/activity_small_horizontal_margin"
+        android:paddingLeft="@dimen/activity_small_horizontal_margin"
+        android:paddingRight="@dimen/activity_small_horizontal_margin"
+        android:paddingStart="@dimen/activity_small_horizontal_margin"
+        android:text="@string/total_item"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/validate_cart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/content_frame"
+        app:layout_constraintVertical_weight="1" />
+
+    <Button
+        android:id="@+id/validate_cart"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/ic_mcgo_button"
+        android:gravity="center"
+        android:paddingEnd="@dimen/activity_small_horizontal_margin"
+        android:paddingLeft="@dimen/activity_small_horizontal_margin"
+        android:paddingRight="@dimen/activity_small_horizontal_margin"
+        android:paddingStart="@dimen/activity_small_horizontal_margin"
+        android:text="@string/validate_cart"
+        android:textColor="@color/colorAccent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/cleanup_cart"
+        app:layout_constraintHorizontal_weight="2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/total_items_price"
+        app:layout_constraintVertical_weight="1" />
+
+    <Button
+        android:id="@+id/cleanup_cart"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/ic_mcgo_button"
+        android:gravity="center"
+        android:paddingEnd="@dimen/activity_small_horizontal_margin"
+        android:paddingLeft="@dimen/activity_small_horizontal_margin"
+        android:paddingRight="@dimen/activity_small_horizontal_margin"
+        android:paddingStart="@dimen/activity_small_horizontal_margin"
+        android:text="@string/cleanup_cart"
+        android:textColor="@color/colorAccent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toEndOf="@+id/validate_cart"
+        app:layout_constraintTop_toBottomOf="@+id/total_items_price"
+        app:layout_constraintVertical_weight="1" />
+
+</android.support.constraint.ConstraintLayout>

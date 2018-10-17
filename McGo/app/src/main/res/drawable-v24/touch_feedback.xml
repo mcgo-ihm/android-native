@@ -3,8 +3,8 @@
     <item android:state_pressed="true">
         <shape>
             <solid android:color="@color/touchFeedback" />
-            <stroke android:width="3dp" android:color="@color/colorPrimary" />
-            <corners android:radius="10dp" />
+            <!--<stroke android:width="3dp" android:color="@color/colorPrimary" />-->
+            <!--<corners android:radius="10dp" />-->
             <padding android:bottom="0dp" android:left="0dp" android:right="0dp" android:top="0dp" />
         </shape>
     </item>
@@ -12,8 +12,8 @@
     <item>
         <shape>
             <solid android:color="@android:color/white" />
-            <stroke android:width="2dp" android:color="@color/colorPrimaryDark" />
-            <corners android:radius="10dp" />
+            <!--<stroke android:width="2dp" android:color="@color/colorPrimaryDark" />-->
+            <!--<corners android:radius="10dp" />-->
             <padding android:bottom="0dp" android:left="0dp" android:right="0dp" android:top="0dp" />
         </shape>
     </item>

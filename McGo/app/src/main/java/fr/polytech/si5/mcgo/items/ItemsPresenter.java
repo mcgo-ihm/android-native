@@ -53,7 +53,14 @@ public class ItemsPresenter implements ItemsContract.Presenter {
 
     @Override
     public void addToCart(@NonNull Item requestedItem) {
-        ItemsDataSource.itemsToOrder.add(requestedItem);
+        if (ItemsDataSource.itemsToOrder.containsKey(requestedItem)) {
+            ItemsDataSource.itemsToOrder.put(requestedItem, ItemsDataSource.itemsToOrder.get(requestedItem) + 1);
+        } else {
+            ItemsDataSource.itemsToOrder.put(requestedItem, 1);
+        }
+
+        ItemsDataSource.cartSize++;
+
         mItemsView.addToCart();
     }
 }

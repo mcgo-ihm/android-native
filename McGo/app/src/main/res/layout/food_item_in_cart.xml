@@ -22,8 +22,8 @@
         android:layout_marginLeft="@dimen/activity_small_horizontal_margin"
         android:layout_marginStart="@dimen/activity_small_horizontal_margin"
         android:layout_weight="20"
-        android:scaleType="fitXY"
         android:contentDescription="@string/item_image"
+        android:scaleType="fitXY"
         android:src="@drawable/ic_default_food_item" />
 
     <TextView

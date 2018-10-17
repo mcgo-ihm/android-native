@@ -1,7 +1,9 @@
 package fr.polytech.si5.mcgo.data.local;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import fr.polytech.si5.mcgo.R;
 import fr.polytech.si5.mcgo.data.Item;
@@ -10,7 +12,9 @@ public final class ItemsDataSource {
 
     public static final List<Item> itemsDataSource = new ArrayList<>();
     public static final List<Item> quickOrderItemsDataSource = new ArrayList<>();
-    public static final List<Item> itemsToOrder = new ArrayList<>();
+    public static final Map<Item, Integer> itemsToOrder = new LinkedHashMap<>();
+    public static int cartSize = 0;
+    public static float cartPrice = 0f;
 
     static {
         int counter = 1;

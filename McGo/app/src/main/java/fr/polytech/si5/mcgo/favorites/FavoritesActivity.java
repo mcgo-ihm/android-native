@@ -101,7 +101,7 @@ public class FavoritesActivity extends QuickOrderActivity {
                             break;
                         case R.id.orders_navigation_menu_item:
                             intent = new Intent(FavoritesActivity.this, OrdersActivity.class);
-                            //startActivity(intent); // Not implemented yet - Expandable View
+                            startActivity(intent); // Not implemented yet - Expandable View
                             break;
                         case R.id.favorite_navigation_menu_item:
                             // Do nothing, we're already on that screen

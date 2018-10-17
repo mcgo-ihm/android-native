@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -28,6 +29,7 @@ import java.util.Locale;
 
 import fr.polytech.si5.mcgo.R;
 import fr.polytech.si5.mcgo.Utils.ActivityUtils;
+import fr.polytech.si5.mcgo.cart.CartActivity;
 import fr.polytech.si5.mcgo.data.Constants;
 import fr.polytech.si5.mcgo.data.Item;
 import fr.polytech.si5.mcgo.data.local.ItemsDataSource;
@@ -68,6 +70,8 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
         }
     };
 
+    private MenuItem mOnResumeMenuItem;
+    private FetchCountTask mFetcher;
     private ItemsAdapter mListAdapter;
     private LinearLayout mItemsView;
     private LinearLayout mNoItemsView;
@@ -77,7 +81,6 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     private RecyclerView.LayoutManager mLayoutManager;
 
     private LayerDrawable mIcon;
-    private int mNotificationsCount = 0;
 
     private boolean mQuickOrderFragment = false;
     private boolean mEnableQuickOrderSelection = false;
@@ -105,13 +108,21 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
         itemsForQuickOrder = new ArrayList<>();
 
         // Run a task to fetch the notifications count.
-        new FetchCountTask().execute();
+        mFetcher = new FetchCountTask();
     }
 
     @Override
     public void onResume() {
         super.onResume();
         mPresenter.start();
+
+        if (mOnResumeMenuItem != null) {
+            mOnResumeMenuItem.setEnabled(true);
+        }
+
+        if (mIcon != null) {
+            ActivityUtils.setBadgeCount(getContext(), mIcon, ItemsDataSource.cartSize);
+        }
     }
 
     @Override
@@ -130,6 +141,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mListAdapter);
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
 
         /*// List View specific
         mRecyclerView.setAdapter(mListAdapter);
@@ -151,6 +163,8 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
+
         switch (item.getItemId()) {
             case R.id.menu_set_quick_order:
                 // Set quick order
@@ -161,11 +175,19 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
                         "Quick Order Food Set saved", Snackbar.LENGTH_LONG).show();
                 break;
             case R.id.menu_cart:
-                // Do nothing atm
+                // Load cart activity
+                intent = new Intent(getContext(), CartActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                item.setEnabled(false);
+                mOnResumeMenuItem = item;
+                startActivityForResult(intent, CartActivity.REQUEST_CART_OVERVIEW);
                 break;
             case R.id.menu_preferences:
                 // Load preferences activity
-                Intent intent = new Intent(getContext(), UserSettingsActivity.class);
+                intent = new Intent(getContext(), UserSettingsActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                item.setEnabled(false);
+                mOnResumeMenuItem = item;
                 startActivityForResult(intent, UserSettingsActivity.REQUEST_PREFERENCE_SETTINGS);
                 break;
         }
@@ -181,7 +203,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
         mIcon = (LayerDrawable) item.getIcon();
 
         // Update LayerDrawable's BadgeDrawable.
-        ActivityUtils.setBadgeCount(getContext(), mIcon, mNotificationsCount);
+        ActivityUtils.setBadgeCount(getContext(), mIcon, ItemsDataSource.cartSize);
 
         if (mQuickOrderFragment) {
             menu.getItem(0).setEnabled(false);
@@ -289,10 +311,8 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
 
     @Override
     public void addToCart() {
-        mNotificationsCount++;
-
         // Update LayerDrawable's BadgeDrawable.
-        ActivityUtils.setBadgeCount(getContext(), mIcon, mNotificationsCount);
+        ActivityUtils.setBadgeCount(getContext(), mIcon, ItemsDataSource.cartSize);
     }
 
     public interface ItemListener {
@@ -440,7 +460,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
      * Updates the count of notifications in the ActionBar.
      */
     private void updateNotificationsBadge(int count) {
-        mNotificationsCount = count;
+        ItemsDataSource.cartSize = count;
 
         // Force the ActionBar to relayout its MenuItems.
         // onCreateOptionsMenu(Menu) will be called again.
@@ -454,8 +474,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
 
         @Override
         protected Integer doInBackground(Void... params) {
-            // Example count. This is where you'd query your data store for the actual count.
-            return ItemsDataSource.itemsToOrder.size();
+            return ActivityUtils.calculateCartSize();
         }
 
         @Override
