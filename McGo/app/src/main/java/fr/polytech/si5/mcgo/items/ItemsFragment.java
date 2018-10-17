@@ -8,18 +8,18 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -73,7 +73,9 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     private LinearLayout mNoItemsView;
     private ImageView mNoItemImage;
     private TextView mNoItemTextView;
-    private ListView mListView;
+    private RecyclerView mRecyclerView;
+    private RecyclerView.LayoutManager mLayoutManager;
+
 
     private LayerDrawable mIcon;
     private int mNotificationsCount = 0;
@@ -103,7 +105,6 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
         mListAdapter = new ItemsAdapter(new ArrayList<>(0), mItemListener, mQuickOrderFragment);
         itemsForQuickOrder = new ArrayList<>();
 
-
         // Run a task to fetch the notifications count.
         new FetchCountTask().execute();
     }
@@ -125,8 +126,18 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
         View root = inflater.inflate(R.layout.items_frag, container, false);
 
         // Set up items view
-        mListView = (ListView) root.findViewById(R.id.items_list);
-        mListView.setAdapter(mListAdapter);
+        mRecyclerView = (RecyclerView) root.findViewById(R.id.items_list);
+        mRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(getContext());
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setAdapter(mListAdapter);
+
+        /*// List View specific
+        mRecyclerView.setAdapter(mListAdapter);
+        mRecyclerView.setCacheColorHint(Color.TRANSPARENT);
+        mRecyclerView.setFastScrollEnabled(true);
+        */
+
         mItemsView = (LinearLayout) root.findViewById(R.id.items_linear_layout);
 
         // Set up no items view
@@ -225,8 +236,8 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     }
 
     private void updateViewsQuickOrder() {
-        for (int i = 0; i < mListView.getCount(); ++i) {
-            View itemView = mListView.getChildAt(i);
+        for (int i = 0; i < mRecyclerView.getChildCount(); ++i) {
+            View itemView = mRecyclerView.getChildAt(i);
 
             if (itemView != null) {
                 CheckBox quickOrderCB = (CheckBox) itemView.findViewById(R.id.item_set_quick_order);
@@ -295,7 +306,20 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
         void onQuickOrderItemClick(Item clickedItem, boolean isChecked);
     }
 
-    private static class ItemsAdapter extends BaseAdapter {
+    private static class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> {
+
+        private int mSelectedItem = 0;
+
+        @NonNull
+        @Override
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup view, int viewType) {
+            ViewHolder viewHolder;
+
+            View foodView = LayoutInflater.from(view.getContext()).inflate(R.layout.food_item, view, false);
+            viewHolder = new ViewHolder(foodView);
+
+            return viewHolder;
+        }
 
         private List<Item> mItems;
         private ItemListener mItemListener;
@@ -320,35 +344,10 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
         }
 
         @Override
-        public int getCount() {
-            return mItems.size();
-        }
+        public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
+            Item item = mItems.get(position);
 
-        @Override
-        public Item getItem(int i) {
-            return mItems.get(i);
-        }
-
-        @Override
-        public long getItemId(int i) {
-            return i;
-        }
-
-        @Override
-        public View getView(int i, View view, ViewGroup viewGroup) {
-            ViewHolder viewHolder;
-
-            if (view == null) {
-                LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-                view = inflater.inflate(R.layout.food_item, viewGroup, false);
-                viewHolder = new ViewHolder(view);
-                view.setTag(viewHolder);
-            } else {
-                viewHolder = (ViewHolder) view.getTag();
-            }
-
-            final Item item = getItem(i);
-
+            viewHolder.itemImage.setImageResource(item.getIconId());
             viewHolder.itemTitle.setText(item.getName());
             viewHolder.itemPrice.setText(String.format(Locale.ENGLISH, "%.2f$", item.getPrice()));
 
@@ -367,7 +366,13 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
                 }
             });
 
-            view.setOnClickListener(new View.OnClickListener() {
+            if (mEnableQuickOrderSelection) {
+                viewHolder.quickOrderCB.setVisibility(View.VISIBLE);
+            } else {
+                viewHolder.quickOrderCB.setVisibility(View.GONE);
+            }
+
+            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     mItemListener.onItemClick(item);
@@ -375,7 +380,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
             });
 
             if (mQuickOrderAdapter) {
-                view.setOnLongClickListener(new View.OnLongClickListener() {
+                viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
                         mItemListener.onItemLongClick(item);
@@ -383,21 +388,19 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
                     }
                 });
             }
-
-            if (mEnableQuickOrderSelection) {
-                viewHolder.quickOrderCB.setVisibility(View.VISIBLE);
-            } else {
-                viewHolder.quickOrderCB.setVisibility(View.GONE);
-            }
-
-            return view;
         }
 
-        void setEnableQuickOrderSelection(boolean enable) {
-            mEnableQuickOrderSelection = enable;
+        @Override
+        public long getItemId(int i) {
+            return i;
         }
 
-        private class ViewHolder {
+        @Override
+        public int getItemCount() {
+            return mItems.size();
+        }
+
+        public static class ViewHolder extends RecyclerView.ViewHolder {
 
             CheckBox quickOrderCB;
             ImageView itemImage;
@@ -407,6 +410,7 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
             Button addToCart;
 
             ViewHolder(View view) {
+                super(view);
                 //view.setClipToOutline(true); // For round borders.
 
                 quickOrderCB = (CheckBox) view.findViewById(R.id.item_set_quick_order);
@@ -416,6 +420,10 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
                 itemPrice = priceCartView.findViewById(R.id.item_price);
                 addToCart = (Button) priceCartView.findViewById(R.id.item_order_button);
             }
+        }
+
+        void setEnableQuickOrderSelection(boolean enable) {
+            mEnableQuickOrderSelection = enable;
         }
     }
 

@@ -5,12 +5,15 @@ import android.support.annotation.Nullable;
 
 import com.google.common.base.Objects;
 
+import fr.polytech.si5.mcgo.R;
+
 public final class Item {
 
     private final int mId;
     private final String mName;
     private final String mDescription;
     private final double mPrice;
+    private final int mIconId;
 
     private boolean mQuickOrderSelect;
 
@@ -19,14 +22,21 @@ public final class Item {
      *
      * @param id          id of the item
      * @param name        name of the item
-     * @param description name of the item
-     * @param price       name of the item
+     * @param description description of the item
+     * @param price       price of the item
+     * @param iconId      id of the icon
      */
-    public Item(@NonNull Integer id, @NonNull String name, @Nullable String description, @NonNull Double price) {
+    public Item(@NonNull Integer id, @NonNull String name, @Nullable String description, @NonNull Double price, @Nullable Integer iconId) {
         mId = id;
         mName = name;
         mDescription = description;
         mPrice = price;
+
+        if (iconId != null) {
+            mIconId = iconId;
+        } else {
+            mIconId = R.drawable.ic_default_food_item;
+        }
 
         mQuickOrderSelect = false;
     }
@@ -54,6 +64,11 @@ public final class Item {
     @NonNull
     public Boolean getQuickOrderSelect() {
         return mQuickOrderSelect;
+    }
+
+    @NonNull
+    public Integer getIconId() {
+        return mIconId;
     }
 
     public void quickOrderSelect() {

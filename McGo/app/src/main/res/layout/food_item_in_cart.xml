@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="?android:attr/listPreferredItemHeightLarge"
+    android:background="@drawable/touch_feedback"
+    android:gravity="center"
+    android:longClickable="true"
+    android:orientation="horizontal"
+    android:paddingBottom="@dimen/list_item_padding"
+    android:paddingLeft="@dimen/activity_small_horizontal_margin"
+    android:paddingRight="@dimen/activity_small_horizontal_margin"
+    android:paddingTop="@dimen/list_item_padding"
+    android:weightSum="100"
+    app:elevation="@dimen/floating_action_button_default_elevation">
+
+    <ImageView
+        android:id="@+id/item_image"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="@dimen/activity_small_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_small_horizontal_margin"
+        android:layout_weight="20"
+        android:contentDescription="@string/item_image"
+        app:srcCompat="@drawable/ic_default_food_item" />
+
+    <TextView
+        android:id="@+id/item_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="@dimen/activity_small_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_small_horizontal_margin"
+        android:layout_weight="45"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+    <LinearLayout
+        android:id="@+id/price_cart_layout"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft="@dimen/activity_small_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_small_horizontal_margin"
+        android:layout_weight="35"
+        android:background="@android:color/transparent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:weightSum="100">
+
+        <TextView
+            android:id="@+id/item_price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/activity_small_vertical_margin"
+            android:gravity="center_horizontal"
+            android:text="@string/item_price" />
+
+        <LinearLayout
+            android:id="@+id/add_del_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:weightSum="100">
+
+            <Button
+                android:id="@+id/item_minus_button"
+                android:layout_width="0dp"
+                android:layout_height="24dp"
+                android:layout_gravity="start"
+                android:layout_weight="29"
+                android:background="@drawable/ic_mcgo_button"
+                android:gravity="center"
+                android:text="@string/item_minus"
+                android:textColor="@color/colorAccent"
+                android:textSize="10sp" />
+
+            <TextView
+                android:id="@+id/item_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/activity_x_small_horizontal_margin"
+                android:layout_marginLeft="@dimen/activity_x_small_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_x_small_horizontal_margin"
+                android:layout_marginStart="@dimen/activity_x_small_horizontal_margin"
+                android:layout_weight="33"
+                android:gravity="center_horizontal"
+                android:text="@string/item_count" />
+
+            <Button
+                android:id="@+id/item_plus_button"
+                android:layout_width="0dp"
+                android:layout_height="24dp"
+                android:layout_gravity="end"
+                android:layout_weight="29"
+                android:background="@drawable/ic_mcgo_button"
+                android:gravity="center"
+                android:text="@string/item_plus"
+                android:textColor="@color/colorAccent"
+                android:textSize="10sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

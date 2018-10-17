@@ -73,7 +73,7 @@ public abstract class QuickOrderActivity extends AppCompatActivity {
 
         if (Build.VERSION.SDK_INT >= 21) {
             AudioAttributes audioAttributes = new AudioAttributes.Builder()
-                    .setUsage(AudioAttributes.USAGE_NOTIFICATION_EVENT)
+                    .setUsage(AudioAttributes.USAGE_GAME)
                     .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
                     .build();
 
@@ -83,7 +83,7 @@ public abstract class QuickOrderActivity extends AppCompatActivity {
             this.mSoundPool = builder.build();
         } else {
             // SoundPool(int maxStreams, int streamType, int srcQuality)
-            this.mSoundPool = new SoundPool(MAX_STREAMS, AudioManager.STREAM_NOTIFICATION, 0);
+            this.mSoundPool = new SoundPool(MAX_STREAMS, AudioManager.STREAM_MUSIC, 0);
         }
 
         // When Sound Pool load complete.
@@ -136,7 +136,6 @@ public abstract class QuickOrderActivity extends AppCompatActivity {
 
     private void playAudioFeedback() {
         if (mLoaded) {
-            System.out.println("################################# PLAY ##################################");
             float leftVolume = mVolume;
             float rightVolume = mVolume;
 
