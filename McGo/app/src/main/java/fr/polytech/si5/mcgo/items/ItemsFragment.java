@@ -76,7 +76,6 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
 
-
     private LayerDrawable mIcon;
     private int mNotificationsCount = 0;
 
@@ -236,19 +235,20 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
     }
 
     private void updateViewsQuickOrder() {
-        for (int i = 0; i < mRecyclerView.getChildCount(); ++i) {
-            View itemView = mRecyclerView.getChildAt(i);
+        /*
+        for (int i = 0; i < mListAdapter.getItemCount(); ++i) {
+            View itemView = mRecyclerView.getChildAt(i);*/
+        for (View v : mListAdapter.getUglyFix()) {
+            /*if (v != null) {*/
+            CheckBox quickOrderCB = (CheckBox) /*itemView*/v.findViewById(R.id.item_set_quick_order);
 
-            if (itemView != null) {
-                CheckBox quickOrderCB = (CheckBox) itemView.findViewById(R.id.item_set_quick_order);
-
-                if (mEnableQuickOrderSelection) {
-                    quickOrderCB.setVisibility(View.VISIBLE);
-                } else {
-                    quickOrderCB.setVisibility(View.GONE);
-                    quickOrderCB.setChecked(false);
-                }
+            if (mEnableQuickOrderSelection) {
+                quickOrderCB.setVisibility(View.VISIBLE);
+            } else {
+                quickOrderCB.setVisibility(View.GONE);
+                quickOrderCB.setChecked(false);
             }
+            //}
         }
     }
 
@@ -308,27 +308,17 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
 
     private static class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> {
 
-        private int mSelectedItem = 0;
-
-        @NonNull
-        @Override
-        public ViewHolder onCreateViewHolder(@NonNull ViewGroup view, int viewType) {
-            ViewHolder viewHolder;
-
-            View foodView = LayoutInflater.from(view.getContext()).inflate(R.layout.food_item, view, false);
-            viewHolder = new ViewHolder(foodView);
-
-            return viewHolder;
-        }
-
         private List<Item> mItems;
-        private ItemListener mItemListener;
+        private List<View> mUglyFix;
 
+        private ItemListener mItemListener;
         private boolean mQuickOrderAdapter;
+
         private boolean mEnableQuickOrderSelection;
 
         ItemsAdapter(List<Item> items, ItemListener itemListener, boolean isQuickOrderAdapter) {
             setList(items);
+            mUglyFix = new ArrayList<>();
             mItemListener = itemListener;
             mQuickOrderAdapter = isQuickOrderAdapter;
             mEnableQuickOrderSelection = false;
@@ -341,6 +331,21 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
 
         private void setList(List<Item> items) {
             mItems = checkNotNull(items);
+        }
+
+        @NonNull
+        @Override
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup view, int viewType) {
+            ViewHolder viewHolder;
+
+            View foodView = LayoutInflater.from(view.getContext()).inflate(R.layout.food_item, view, false);
+            viewHolder = new ViewHolder(foodView);
+
+            if (!mUglyFix.contains(foodView)) {
+                mUglyFix.add(foodView);
+            }
+
+            return viewHolder;
         }
 
         @Override
@@ -400,6 +405,10 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
             return mItems.size();
         }
 
+        public List<View> getUglyFix() {
+            return mUglyFix;
+        }
+
         public static class ViewHolder extends RecyclerView.ViewHolder {
 
             CheckBox quickOrderCB;
@@ -413,12 +422,12 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
                 super(view);
                 //view.setClipToOutline(true); // For round borders.
 
-                quickOrderCB = (CheckBox) view.findViewById(R.id.item_set_quick_order);
-                itemImage = (ImageView) view.findViewById(R.id.item_image);
-                itemTitle = (TextView) view.findViewById(R.id.item_title);
+                quickOrderCB = view.findViewById(R.id.item_set_quick_order);
+                itemImage = view.findViewById(R.id.item_image);
+                itemTitle = view.findViewById(R.id.item_title);
                 priceCartView = view.findViewById(R.id.price_cart_layout);
                 itemPrice = priceCartView.findViewById(R.id.item_price);
-                addToCart = (Button) priceCartView.findViewById(R.id.item_order_button);
+                addToCart = priceCartView.findViewById(R.id.item_order_button);
             }
         }
 

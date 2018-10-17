@@ -17,12 +17,11 @@
             android:id="@+id/items_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:animationCache="false"
             android:divider="@android:color/transparent"
             android:dividerHeight="10dp"
             android:paddingBottom="@dimen/list_item_padding"
-            android:paddingTop="@dimen/list_item_padding"
-            android:scrollingCache="false" />
+            android:scrollbars="vertical"
+            android:paddingTop="@dimen/list_item_padding"/>
 
     </LinearLayout>
 
