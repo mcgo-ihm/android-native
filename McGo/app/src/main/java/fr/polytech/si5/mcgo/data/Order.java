@@ -8,12 +8,18 @@ import com.google.common.base.Objects;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public final class Order {
+import fr.polytech.si5.mcgo.orders.ParentListItem;
+
+public final class Order implements ParentListItem {
+
+    // Useless
+    public enum OrderState {IN_PROGRESS, DELIVERED}
 
     private final int mId;
     private final LocalDateTime mDate;
     private final List<Item> mListOfItems;
     private final double mTotal;
+    private OrderState state;
 
     /**
      * Use this constructor to create a new Order.
@@ -28,6 +34,7 @@ public final class Order {
         mDate = date;
         mListOfItems = listOfItems;
         mTotal = total;
+        state = OrderState.IN_PROGRESS;
     }
 
     @NonNull
@@ -41,13 +48,38 @@ public final class Order {
     }
 
     @NonNull
-    public List<Item> getListOfItems() {
-        return mListOfItems;
+    public Double getTotal() {
+        return mTotal;
     }
 
     @NonNull
-    public double getTotal() {
-        return mTotal;
+    public Integer getTotalItems() {
+        int total = 0;
+
+        for (Item i : mListOfItems) {
+            total += i.getQuantity();
+        }
+
+        return total;
+    }
+
+    @NonNull
+    public OrderState getState() {
+        return state;
+    }
+
+    public void setState(OrderState state) {
+        this.state = state;
+    }
+
+    @Override
+    public List<?> getChildItemList() {
+        return mListOfItems;
+    }
+
+    @Override
+    public boolean isInitiallyExpanded() {
+        return false;
     }
 
     @Override

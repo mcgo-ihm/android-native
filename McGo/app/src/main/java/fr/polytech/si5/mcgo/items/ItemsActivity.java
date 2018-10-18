@@ -98,7 +98,7 @@ public class ItemsActivity extends QuickOrderActivity {
                             break;
                         case R.id.orders_navigation_menu_item:
                             intent = new Intent(ItemsActivity.this, OrdersActivity.class);
-                            //startActivity(intent); // Not implemented yet - Expandable View
+                            startActivity(intent);
                             break;
                         case R.id.favorite_navigation_menu_item:
                             intent = new Intent(ItemsActivity.this, FavoritesActivity.class);

@@ -30,6 +30,16 @@
     <string name="validate_cart">Confirm</string>
     <string name="cleanup_cart">Clear</string>
 
+    <!-- Order activity -->
+    <string name="expand_collapse">Expand / Collapse</string>
+    <string name="order_price">Price:</string>
+    <string name="order_items_number">Items number:</string>
+    <string name="order_date">hh:mm:ss dd/mm/yyyy</string>
+    <string name="order_in_progress">In progress</string>
+    <string name="order_history">History</string>
+    <string name="item_qty">Quantity:</string>
+    <string name="item_unit_price">Price (unit):</string>
+
     <!-- User settings preferences -->
     <string name="preferences_activity_label">Preferences</string>
     <string name="preferences_quick_order_title">Quick Order</string>

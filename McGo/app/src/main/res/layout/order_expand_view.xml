@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="?android:attr/listPreferredItemHeightLarge"
+    android:background="@drawable/touch_feedback"
+    android:gravity="center"
+    android:longClickable="true"
+    android:orientation="horizontal"
+    android:paddingBottom="@dimen/list_item_padding"
+    android:paddingLeft="@dimen/activity_small_horizontal_margin"
+    android:paddingRight="@dimen/activity_small_horizontal_margin"
+    android:paddingTop="@dimen/list_item_padding"
+    android:weightSum="100"
+    app:elevation="@dimen/floating_action_button_default_elevation">
+
+    <ImageView
+        android:id="@+id/item_image"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="@dimen/activity_small_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_small_horizontal_margin"
+        android:layout_weight="20"
+        android:contentDescription="@string/item_image"
+        android:src="@drawable/ic_default_food_item" />
+
+    <TextView
+        android:id="@+id/item_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="@dimen/activity_small_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_small_horizontal_margin"
+        android:layout_weight="50"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+    <LinearLayout
+        android:id="@+id/price_cart_layout"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft="@dimen/activity_small_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_small_horizontal_margin"
+        android:layout_weight="30"
+        android:background="@android:color/transparent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/item_qty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/activity_small_vertical_margin"
+            android:gravity="center_horizontal"
+            android:text="@string/item_qty" />
+
+        <TextView
+            android:id="@+id/item_unit_price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/activity_small_vertical_margin"
+            android:gravity="center_horizontal"
+            android:text="@string/item_price" />
+
+    </LinearLayout>
+
+</LinearLayout>

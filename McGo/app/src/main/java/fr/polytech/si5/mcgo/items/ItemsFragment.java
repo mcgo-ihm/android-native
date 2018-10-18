@@ -33,6 +33,7 @@ import fr.polytech.si5.mcgo.cart.CartActivity;
 import fr.polytech.si5.mcgo.data.Constants;
 import fr.polytech.si5.mcgo.data.Item;
 import fr.polytech.si5.mcgo.data.local.ItemsDataSource;
+import fr.polytech.si5.mcgo.favorites.FavoritesActivity;
 import fr.polytech.si5.mcgo.settings.UserSettingsActivity;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -143,12 +144,6 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
         mRecyclerView.setAdapter(mListAdapter);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
 
-        /*// List View specific
-        mRecyclerView.setAdapter(mListAdapter);
-        mRecyclerView.setCacheColorHint(Color.TRANSPARENT);
-        mRecyclerView.setFastScrollEnabled(true);
-        */
-
         mItemsView = (LinearLayout) root.findViewById(R.id.items_linear_layout);
 
         // Set up no items view
@@ -173,6 +168,8 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
                 resetQuickOrderSelection();
                 Snackbar.make(((ViewGroup) getActivity().findViewById(android.R.id.content)).getChildAt(0),
                         "Quick Order Food Set saved", Snackbar.LENGTH_LONG).show();
+                intent = new Intent(getContext(), FavoritesActivity.class);
+                startActivityForResult(intent, CartActivity.REQUEST_CART_OVERVIEW);
                 break;
             case R.id.menu_cart:
                 // Load cart activity

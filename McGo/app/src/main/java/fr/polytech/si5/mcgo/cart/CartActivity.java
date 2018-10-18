@@ -9,6 +9,7 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.Set;
 
+import fr.polytech.si5.mcgo.QuickOrderActivity;
 import fr.polytech.si5.mcgo.R;
 import fr.polytech.si5.mcgo.Utils.ActivityUtils;
 import fr.polytech.si5.mcgo.data.Constants;
@@ -18,7 +19,7 @@ import fr.polytech.si5.mcgo.items.ItemsFragment;
 import fr.polytech.si5.mcgo.items.ItemsPresenter;
 import fr.polytech.si5.mcgo.settings.UserSettingsFragment;
 
-public class CartActivity extends AppCompatActivity {
+public class CartActivity extends QuickOrderActivity {
 
     public static final int REQUEST_CART_OVERVIEW = 2;
 

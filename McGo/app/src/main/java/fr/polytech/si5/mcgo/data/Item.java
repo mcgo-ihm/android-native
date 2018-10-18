@@ -15,6 +15,11 @@ public final class Item {
     private final double mPrice;
     private final int mIconId;
 
+    /**
+     * Item quantity for items in order.
+     */
+    private int mQuantity;
+
     private boolean mQuickOrderSelect;
 
     /**
@@ -69,6 +74,15 @@ public final class Item {
     @NonNull
     public Integer getIconId() {
         return mIconId;
+    }
+
+    @NonNull
+    public Integer getQuantity() {
+        return mQuantity;
+    }
+
+    public void setQuantity(int quantity) {
+        mQuantity = quantity;
     }
 
     public void quickOrderSelect() {

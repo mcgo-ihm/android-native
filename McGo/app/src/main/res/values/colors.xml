@@ -6,7 +6,8 @@
     <color name="colorPrimaryDark">#FF7100</color>
     <color name="colorAccent">#015EFF</color>
 
-    <color name="touchFeedback">#d8e1e6</color>
+    <color name="touchFeedback">#D8E1E6</color>
     <drawable name="quickOrderSelectedBackground">#CCCCCC</drawable>
+    <color name="lightGray">#BDBDBD</color>
 
 </resources>

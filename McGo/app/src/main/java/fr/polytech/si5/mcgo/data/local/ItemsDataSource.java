@@ -2,19 +2,28 @@ package fr.polytech.si5.mcgo.data.local;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import fr.polytech.si5.mcgo.R;
 import fr.polytech.si5.mcgo.data.Item;
+import fr.polytech.si5.mcgo.data.Order;
 
 public final class ItemsDataSource {
 
+    // Main
     public static final List<Item> itemsDataSource = new ArrayList<>();
     public static final List<Item> quickOrderItemsDataSource = new ArrayList<>();
+
+    // Cart
     public static final Map<Item, Integer> itemsToOrder = new LinkedHashMap<>();
     public static int cartSize = 0;
     public static float cartPrice = 0f;
+
+    // Orders
+    public static final List<Order> ordersInProgress = new LinkedList<>();
+    public static final List<Order> ordersDelivered = new LinkedList<>();
 
     static {
         int counter = 1;
