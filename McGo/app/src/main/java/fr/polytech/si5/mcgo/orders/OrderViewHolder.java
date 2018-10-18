@@ -35,7 +35,7 @@ public class OrderViewHolder extends ParentViewHolder {
     }
 
     public void bind(Context context, Order order) {
-        mOrderPrice.setText(String.format(Locale.ENGLISH, "%s %f",
+        mOrderPrice.setText(String.format(Locale.ENGLISH, "%s %.2f$",
                 context.getResources().getString(R.string.order_price), order.getTotal()));
         mOrderTotalItems.setText(String.format(Locale.ENGLISH, "%s %d",
                 context.getResources().getString(R.string.order_items_number), order.getTotalItems()));

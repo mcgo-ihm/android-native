@@ -14,8 +14,10 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.ViewGroup;
 
+import fr.polytech.si5.mcgo.Utils.ActivityUtils;
 import fr.polytech.si5.mcgo.data.Sensors;
 import fr.polytech.si5.mcgo.data.UserSettings;
+import fr.polytech.si5.mcgo.data.local.ItemsDataSource;
 import fr.polytech.si5.mcgo.sensors.ShakeDetector;
 
 public abstract class QuickOrderActivity extends AppCompatActivity {
@@ -121,6 +123,11 @@ public abstract class QuickOrderActivity extends AppCompatActivity {
                 playAudioFeedback();
             }
 
+            if (ItemsDataSource.cartSize != 0) {
+                ActivityUtils.confirmOrder();
+            } else {
+                ActivityUtils.performQuickOrder();
+            }
             Snackbar.make(((ViewGroup) this.findViewById(android.R.id.content)).getChildAt(0),
                     "Quick Order Succeeded", Snackbar.LENGTH_LONG).show();
         }

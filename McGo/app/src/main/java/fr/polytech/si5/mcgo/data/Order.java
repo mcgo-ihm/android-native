@@ -18,7 +18,7 @@ public final class Order implements ParentListItem {
     private final int mId;
     private final LocalDateTime mDate;
     private final List<Item> mListOfItems;
-    private final double mTotal;
+    private final float mTotal;
     private OrderState state;
 
     /**
@@ -29,7 +29,7 @@ public final class Order implements ParentListItem {
      * @param listOfItems list of items to order
      * @param total       sum of all items in {@see listOfItems}
      */
-    public Order(@NonNull Integer id, @NonNull LocalDateTime date, @Nullable List<Item> listOfItems, @NonNull Double total) {
+    public Order(@NonNull Integer id, @NonNull LocalDateTime date, @Nullable List<Item> listOfItems, @NonNull Float total) {
         mId = id;
         mDate = date;
         mListOfItems = listOfItems;
@@ -48,7 +48,7 @@ public final class Order implements ParentListItem {
     }
 
     @NonNull
-    public Double getTotal() {
+    public Float getTotal() {
         return mTotal;
     }
 

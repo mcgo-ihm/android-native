@@ -45,4 +45,8 @@ public class OrderAdapter extends ExpandableRecyclerAdapter<OrderViewHolder, Ite
         Item item = (Item) childListItem;
         itemsViewHolder.bind(context, item);
     }
+
+    public void refreshData() {
+        notifyDataSetChanged();
+    }
 }

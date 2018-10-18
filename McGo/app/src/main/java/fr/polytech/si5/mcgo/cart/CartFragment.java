@@ -59,12 +59,16 @@ public class CartFragment extends Fragment implements CartContract.View {
 
         @Override
         public void onValidateCart() {
-            mPresenter.confirmOrder();
+            if (ItemsDataSource.cartSize != 0) {
+                mPresenter.confirmOrder();
+            }
         }
 
         @Override
         public void onCleanupCart() {
-            mPresenter.clearCart();
+            if (ItemsDataSource.cartSize != 0) {
+                mPresenter.clearCart();
+            }
         }
     };
 

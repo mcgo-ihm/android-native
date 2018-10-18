@@ -7,10 +7,12 @@
     android:gravity="center"
     android:longClickable="true"
     android:orientation="horizontal"
-    android:paddingBottom="@dimen/list_item_padding"
-    android:paddingLeft="@dimen/activity_small_horizontal_margin"
-    android:paddingRight="@dimen/activity_small_horizontal_margin"
-    android:paddingTop="@dimen/list_item_padding"
+    android:paddingBottom="@dimen/activity_x_small_vertical_margin"
+    android:paddingEnd="@dimen/activity_x_small_vertical_margin"
+    android:paddingLeft="@dimen/activity_x_small_horizontal_margin"
+    android:paddingRight="@dimen/activity_x_small_vertical_margin"
+    android:paddingStart="@dimen/activity_x_small_horizontal_margin"
+    android:paddingTop="@dimen/activity_x_small_vertical_margin"
     android:weightSum="100"
     app:elevation="@dimen/floating_action_button_default_elevation">
 

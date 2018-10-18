@@ -58,12 +58,12 @@ public class OrdersActivity extends AppCompatActivity {
         mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                if (currentAdapter == mInProgressAdapter) {
-                    mRecyclerView.setAdapter(mDeliveredAdapter);
-                    currentAdapter = mDeliveredAdapter;
-                } else {
+                if (tab.getPosition() == 0) {
                     mRecyclerView.setAdapter(mInProgressAdapter);
                     currentAdapter = mInProgressAdapter;
+                } else {
+                    mRecyclerView.setAdapter(mDeliveredAdapter);
+                    currentAdapter = mDeliveredAdapter;
                 }
             }
 
@@ -102,15 +102,24 @@ public class OrdersActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        // I have to do this ugly stuff as I didn't figured yet how to refresh data of these views.
+        /*mInProgressAdapter = new OrderAdapter(this, ItemsDataSource.ordersInProgress);
+        mDeliveredAdapter = new OrderAdapter(this, ItemsDataSource.ordersDelivered);
+        mRecyclerView.setAdapter(currentAdapter);*/
+    }
+
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        currentAdapter.onSaveInstanceState(outState);
+        //currentAdapter.onSaveInstanceState(outState);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        currentAdapter.onRestoreInstanceState(savedInstanceState);
+        //currentAdapter.onRestoreInstanceState(savedInstanceState);
     }
 
     protected void setupDrawerContent(NavigationView navigationView) {
@@ -122,6 +131,7 @@ public class OrdersActivity extends AppCompatActivity {
                         case R.id.food_navigation_menu_item:
                             intent = new Intent(OrdersActivity.this, ItemsActivity.class);
                             startActivity(intent);
+                            finish();
                             break;
                         case R.id.orders_navigation_menu_item:
                             // Do nothing, we're already on that screen
@@ -129,6 +139,7 @@ public class OrdersActivity extends AppCompatActivity {
                         case R.id.favorite_navigation_menu_item:
                             intent = new Intent(OrdersActivity.this, FavoritesActivity.class);
                             startActivity(intent);
+                            finish();
                             break;
                         default:
                             break;
@@ -139,56 +150,5 @@ public class OrdersActivity extends AppCompatActivity {
                     mDrawerLayout.closeDrawers();
                     return true;
                 });
-    }
-
-    public static void expand(final View v) {
-        v.measure(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        final int targetHeight = v.getMeasuredHeight();
-
-        // Older versions of android (pre API 21) cancel animations for views with a height of 0.
-        v.getLayoutParams().height = 1;
-        v.setVisibility(View.VISIBLE);
-        Animation a = new Animation() {
-            @Override
-            protected void applyTransformation(float interpolatedTime, Transformation t) {
-                v.getLayoutParams().height = interpolatedTime == 1 ?
-                        ViewGroup.LayoutParams.WRAP_CONTENT : (int) (targetHeight * interpolatedTime);
-                v.requestLayout();
-            }
-
-            @Override
-            public boolean willChangeBounds() {
-                return true;
-            }
-        };
-
-        // 1dp/ms.
-        a.setDuration((int) (targetHeight / v.getContext().getResources().getDisplayMetrics().density));
-        v.startAnimation(a);
-    }
-
-    public static void collapse(final View v) {
-        final int initialHeight = v.getMeasuredHeight();
-
-        Animation a = new Animation() {
-            @Override
-            protected void applyTransformation(float interpolatedTime, Transformation t) {
-                if (interpolatedTime == 1) {
-                    v.setVisibility(View.GONE);
-                } else {
-                    v.getLayoutParams().height = initialHeight - (int) (initialHeight * interpolatedTime);
-                    v.requestLayout();
-                }
-            }
-
-            @Override
-            public boolean willChangeBounds() {
-                return true;
-            }
-        };
-
-        // 1dp/ms.
-        a.setDuration((int) (initialHeight / v.getContext().getResources().getDisplayMetrics().density));
-        v.startAnimation(a);
     }
 }

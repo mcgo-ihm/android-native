@@ -9,12 +9,22 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+
 import fr.polytech.si5.mcgo.R;
 import fr.polytech.si5.mcgo.data.Item;
+import fr.polytech.si5.mcgo.data.Order;
 import fr.polytech.si5.mcgo.data.local.ItemsDataSource;
 import fr.polytech.si5.mcgo.orders.BadgeDrawable;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static fr.polytech.si5.mcgo.data.local.ItemsDataSource.ORDER_ID;
+import static fr.polytech.si5.mcgo.data.local.ItemsDataSource.cartPrice;
+import static fr.polytech.si5.mcgo.data.local.ItemsDataSource.cartSize;
+import static fr.polytech.si5.mcgo.data.local.ItemsDataSource.itemsToOrder;
+import static fr.polytech.si5.mcgo.data.local.ItemsDataSource.ordersInProgress;
+import static fr.polytech.si5.mcgo.data.local.ItemsDataSource.quickOrderItemsDataSource;
 
 /**
  * This provides methods to help Activities load their UI.
@@ -88,5 +98,37 @@ public class ActivityUtils {
         price = price < 0 ? 0 : price;
         ItemsDataSource.cartPrice = price;
         return price;
+    }
+
+    public static void performQuickOrder() {
+        Order order = null;
+        float price = 0f;
+
+        for (Item i : quickOrderItemsDataSource) {
+            price += i.getPrice();
+        }
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            order = new Order(ORDER_ID++, LocalDateTime.now(), quickOrderItemsDataSource, price);
+        }
+
+        ordersInProgress.add(order);
+    }
+
+    public static void confirmOrder() {
+        Order order = null;
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            order = new Order(ORDER_ID++, LocalDateTime.now(), new ArrayList<>(itemsToOrder.keySet()), cartPrice);
+        }
+
+        ordersInProgress.add(order);
+        clearCart();
+    }
+
+    private static void clearCart() {
+        itemsToOrder.clear();
+        cartSize = 0;
+        cartPrice = 0f;
     }
 }

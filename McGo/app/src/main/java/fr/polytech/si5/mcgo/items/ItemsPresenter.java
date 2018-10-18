@@ -8,6 +8,7 @@ import fr.polytech.si5.mcgo.data.Item;
 import fr.polytech.si5.mcgo.data.local.ItemsDataSource;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static fr.polytech.si5.mcgo.data.local.ItemsDataSource.itemsToOrder;
 
 /**
  * Listens to user actions from the UI ({@link ItemsFragment}), retrieves the data and updates the
@@ -60,7 +61,7 @@ public class ItemsPresenter implements ItemsContract.Presenter {
         }
 
         ItemsDataSource.cartSize++;
-
+        requestedItem.setQuantity(itemsToOrder.get(requestedItem));
         mItemsView.addToCart();
     }
 }

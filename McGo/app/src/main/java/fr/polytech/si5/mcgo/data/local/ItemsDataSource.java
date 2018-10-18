@@ -22,6 +22,7 @@ public final class ItemsDataSource {
     public static float cartPrice = 0f;
 
     // Orders
+    public static int ORDER_ID = 0;
     public static final List<Order> ordersInProgress = new LinkedList<>();
     public static final List<Order> ordersDelivered = new LinkedList<>();
 
