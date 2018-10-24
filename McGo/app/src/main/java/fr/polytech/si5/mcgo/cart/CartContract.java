@@ -8,6 +8,7 @@ import java.util.List;
 import fr.polytech.si5.mcgo.BasePresenter;
 import fr.polytech.si5.mcgo.BaseView;
 import fr.polytech.si5.mcgo.data.Item;
+import fr.polytech.si5.mcgo.data.Order;
 
 public interface CartContract {
 
@@ -17,9 +18,11 @@ public interface CartContract {
 
         void showNoItems();
 
-        void addItemToCart(TextView itemCount, @NonNull Item requestedItem);
+        void addItemToCart(TextView itemCount, @NonNull Item requestedItem, int cartSize, float cartPrice);
 
-        void removeItemFromCart(TextView itemCount, @NonNull Item requestedItem);
+        void removeItemFromCart(TextView itemCount, @NonNull Item requestedItem, int cartSize, float cartPrice);
+
+        void updateCartStatus(int cartSize, float cartPrice);
 
         void clearCart();
 
@@ -27,7 +30,7 @@ public interface CartContract {
 
     interface Presenter extends BasePresenter {
 
-        void loadDataSource(@NonNull List<Item> requestedDataSource);
+        void loadDataSource(@NonNull Order order);
 
         void openItemDetails(@NonNull Item requestedItem);
 
@@ -35,7 +38,7 @@ public interface CartContract {
 
         void removeItemFromCart(TextView itemCount, @NonNull Item requestedItem);
 
-        void confirmOrder();
+        void confirmCart();
 
         void clearCart();
 

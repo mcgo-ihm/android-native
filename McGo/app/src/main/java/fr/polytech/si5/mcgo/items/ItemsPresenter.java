@@ -1,6 +1,8 @@
 package fr.polytech.si5.mcgo.items;
 
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 
 import java.util.List;
 
@@ -8,7 +10,6 @@ import fr.polytech.si5.mcgo.data.Item;
 import fr.polytech.si5.mcgo.data.local.ItemsDataSource;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static fr.polytech.si5.mcgo.data.local.ItemsDataSource.itemsToOrder;
 
 /**
  * Listens to user actions from the UI ({@link ItemsFragment}), retrieves the data and updates the
@@ -52,16 +53,10 @@ public class ItemsPresenter implements ItemsContract.Presenter {
         mItemsView.enableQuickOrderSelection();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void addToCart(@NonNull Item requestedItem) {
-        if (ItemsDataSource.itemsToOrder.containsKey(requestedItem)) {
-            ItemsDataSource.itemsToOrder.put(requestedItem, ItemsDataSource.itemsToOrder.get(requestedItem) + 1);
-        } else {
-            ItemsDataSource.itemsToOrder.put(requestedItem, 1);
-        }
-
-        ItemsDataSource.cartSize++;
-        requestedItem.setQuantity(itemsToOrder.get(requestedItem));
+        ItemsDataSource.cart.addItem(requestedItem);
         mItemsView.addToCart();
     }
 }

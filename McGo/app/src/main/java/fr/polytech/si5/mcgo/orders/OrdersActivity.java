@@ -1,10 +1,11 @@
 package fr.polytech.si5.mcgo.orders;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.NavUtils;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -13,15 +14,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.Transformation;
 
 import fr.polytech.si5.mcgo.R;
 import fr.polytech.si5.mcgo.data.local.ItemsDataSource;
-import fr.polytech.si5.mcgo.favorites.FavoritesActivity;
 import fr.polytech.si5.mcgo.items.ItemsActivity;
+import fr.polytech.si5.mcgo.quickorder.QuickOrderActivity;
 
 public class OrdersActivity extends AppCompatActivity {
 
@@ -33,6 +30,7 @@ public class OrdersActivity extends AppCompatActivity {
     private OrderAdapter mDeliveredAdapter;
     private OrderAdapter currentAdapter;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,8 +77,8 @@ public class OrdersActivity extends AppCompatActivity {
         });
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        mInProgressAdapter = new OrderAdapter(this, ItemsDataSource.ordersInProgress);
-        mDeliveredAdapter = new OrderAdapter(this, ItemsDataSource.ordersDelivered);
+        mInProgressAdapter = new OrderAdapter(this, ItemsDataSource.ORDERS_IN_PROGRESS);
+        mDeliveredAdapter = new OrderAdapter(this, ItemsDataSource.ORDERS_DELIVERED);
         mRecyclerView.setAdapter(mInProgressAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         currentAdapter = mInProgressAdapter;
@@ -104,10 +102,6 @@ public class OrdersActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // I have to do this ugly stuff as I didn't figured yet how to refresh data of these views.
-        /*mInProgressAdapter = new OrderAdapter(this, ItemsDataSource.ordersInProgress);
-        mDeliveredAdapter = new OrderAdapter(this, ItemsDataSource.ordersDelivered);
-        mRecyclerView.setAdapter(currentAdapter);*/
     }
 
     @Override
@@ -136,8 +130,8 @@ public class OrdersActivity extends AppCompatActivity {
                         case R.id.orders_navigation_menu_item:
                             // Do nothing, we're already on that screen
                             break;
-                        case R.id.favorite_navigation_menu_item:
-                            intent = new Intent(OrdersActivity.this, FavoritesActivity.class);
+                        case R.id.quick_order_navigation_menu_item:
+                            intent = new Intent(OrdersActivity.this, QuickOrderActivity.class);
                             startActivity(intent);
                             finish();
                             break;

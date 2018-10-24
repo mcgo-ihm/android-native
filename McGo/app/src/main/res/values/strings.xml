@@ -2,48 +2,48 @@
 <resources>
 
     <string name="app_name">McGo</string>
-    <string name="orders_activity">Orders</string>
-    <string name="favorite_activity">Quick Order</string>
-    <string name="action_settings">Settings</string>
     <string name="cart_activity">Cart</string>
+    <string name="orders_activity">Orders</string>
+    <string name="quick_order_activity">Quick Order</string>
+    <string name="action_settings">Settings</string>
 
     <!-- Drawer items -->
-    <string name="food_title">Food list</string>
-    <string name="orders_title">Orders</string>
-    <string name="favorite_title">Quick Order Food Set</string>
+    <string name="drawer_food_title">Food Item List</string>
+    <string name="drawer_orders_title">Orders</string>
+    <string name="drawer_quick_order_title">Quick Order Set</string>
 
-    <!-- Food Item -->
+    <!-- Item -->
     <string name="item_image">Item Image</string>
     <string name="item_price">0.00$</string>
-    <string name="item_count">0</string>
     <string name="add_to_cart">Add to Cart</string>
     <string name="item_plus">+</string>
+    <string name="item_quantity">0</string>
     <string name="item_minus">−</string>
     <string name="no_items">No items</string>
 
     <!-- Items fragment menu -->
-    <string name="menu_cart">See Orders</string>
+    <string name="menu_cart">See Cart</string>
     <string name="menu_set_quick_order">Set Quick Order</string>
 
     <!-- Cart item fragment -->
     <string name="total_item">Total items and price in cart: </string>
-    <string name="validate_cart">Confirm</string>
-    <string name="cleanup_cart">Clear</string>
+    <string name="confirm_cart">Confirm</string>
+    <string name="clear_cart">Clear</string>
 
     <!-- Order activity -->
     <string name="expand_collapse">Expand / Collapse</string>
     <string name="order_price">Price:</string>
-    <string name="order_items_number">Items number:</string>
+    <string name="order_items_total_quantity">Items number:</string>
     <string name="order_date">hh:mm:ss dd/mm/yyyy</string>
     <string name="order_in_progress">In progress</string>
     <string name="order_history">History</string>
-    <string name="item_qty">Quantity:</string>
-    <string name="item_unit_price">Price (unit):</string>
+    <string name="order_item_quantity">Quantity:</string>
+    <string name="order_item_unit_price">Unit price:</string>
 
     <!-- User settings preferences -->
     <string name="preferences_activity_label">Preferences</string>
     <string name="preferences_quick_order_title">Quick Order</string>
-    <string name="preferences_quick_order_summary">Sets preferences about Quick Order feature</string>
+    <string name="preferences_quick_order_summary">Set preferences about Quick Order feature</string>
     <string name="preferences_quick_order_main_title">Enable</string>
     <string name="preferences_quick_order_main_first_dependant_title">Vibration feedback</string>
     <string name="preferences_quick_order_main_first_dependant_summary">Enable vibration feedback when quick order is performed</string>

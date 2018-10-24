@@ -10,17 +10,20 @@ import android.media.SoundPool;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.ViewGroup;
 
-import fr.polytech.si5.mcgo.Utils.ActivityUtils;
 import fr.polytech.si5.mcgo.data.Sensors;
 import fr.polytech.si5.mcgo.data.UserSettings;
 import fr.polytech.si5.mcgo.data.local.ItemsDataSource;
 import fr.polytech.si5.mcgo.sensors.ShakeDetector;
 
-public abstract class QuickOrderActivity extends AppCompatActivity {
+import static fr.polytech.si5.mcgo.Utils.OrderUtils.confirmCart;
+import static fr.polytech.si5.mcgo.Utils.OrderUtils.performQuickOrder;
+
+public abstract class QuickOrderPropertyActivity extends AppCompatActivity {
 
     private SharedPreferences prefs;
     private SensorManager mSensorManager;
@@ -47,6 +50,7 @@ public abstract class QuickOrderActivity extends AppCompatActivity {
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mShakeDetector = new ShakeDetector();
         mShakeDetector.setOnShakeListener(new ShakeDetector.OnShakeListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onShake(int count) {
                 if (prefs.getBoolean(UserSettings.QUICK_ORDER_ENABLE, false)) {
@@ -114,6 +118,7 @@ public abstract class QuickOrderActivity extends AppCompatActivity {
 
     // Sensors.
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void handleShakeEvent(int count) {
         if (count == 5) {
             if (prefs.getBoolean(UserSettings.QUICK_ORDER_VIBRATION_FEEDBACK, false)) {
@@ -123,10 +128,10 @@ public abstract class QuickOrderActivity extends AppCompatActivity {
                 playAudioFeedback();
             }
 
-            if (ItemsDataSource.cartSize != 0) {
-                ActivityUtils.confirmOrder();
-            } else {
-                ActivityUtils.performQuickOrder();
+            if (ItemsDataSource.cart.getTotalItemsNumber() != 0) {
+                confirmCart();
+            } else if (ItemsDataSource.quickOrder.getTotalItemsNumber() != 0) {
+                performQuickOrder();
             }
             Snackbar.make(((ViewGroup) this.findViewById(android.R.id.content)).getChildAt(0),
                     "Quick Order Succeeded", Snackbar.LENGTH_LONG).show();

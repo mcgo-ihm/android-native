@@ -4,6 +4,8 @@
 
     <!-- Code for expandable item inspired from
     https://github.com/hiteshbpatel/Android_Blog_Projects/blob/master/ExpandableRecyclerViewExampleAndroid-->
+    <!-- Some parts of the code and test code are inspired
+    from https://github.com/googlesamples/android-architecture/tree/todo-mvp/-->
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -37,8 +39,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".favorites.FavoritesActivity"
-            android:label="@string/favorite_activity"
+            android:name=".quickorder.QuickOrderActivity"
+            android:label="@string/quick_order_activity"
             android:launchMode="singleInstance"
             android:theme="@style/AppTheme.OverlapSystemBar">
 

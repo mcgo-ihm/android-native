@@ -32,8 +32,8 @@ public class ItemsViewHolder extends ChildViewHolder {
         mItemImage.setImageResource(item.getIconId());
         mItemTitle.setText(item.getName());
         mItemQty.setText(String.format(Locale.ENGLISH, "%s %d",
-                context.getResources().getString(R.string.item_qty), item.getQuantity()));
+                context.getResources().getString(R.string.order_item_quantity), item.getQuantity()));
         mItemUnitPrice.setText(String.format(Locale.ENGLISH, "%s %.2f$",
-                context.getResources().getString(R.string.item_unit_price), item.getPrice()));
+                context.getResources().getString(R.string.order_item_unit_price), item.getPrice()));
     }
 }

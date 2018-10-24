@@ -21,8 +21,8 @@
     <dimen name="add_to_cart_button_height">24dp</dimen>
 
     <!-- Elevation -->
+    <dimen name="card_default_elevation">2dp</dimen>
     <dimen name="app_bar_default_elevation">4dp</dimen>
     <dimen name="floating_action_button_default_elevation">8dp</dimen>
-    <dimen name="card_default_elevation">2dp</dimen>
 
 </resources>

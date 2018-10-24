@@ -36,9 +36,9 @@ public class OrderViewHolder extends ParentViewHolder {
 
     public void bind(Context context, Order order) {
         mOrderPrice.setText(String.format(Locale.ENGLISH, "%s %.2f$",
-                context.getResources().getString(R.string.order_price), order.getTotal()));
+                context.getResources().getString(R.string.order_price), order.getPrice()));
         mOrderTotalItems.setText(String.format(Locale.ENGLISH, "%s %d",
-                context.getResources().getString(R.string.order_items_number), order.getTotalItems()));
+                context.getResources().getString(R.string.order_items_total_quantity), order.getTotalItemsNumber()));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             mOrderDate.setText(order.getDate().format(DateTimeFormatter.ofPattern("HH:mm:ss dd-MM-yyyy")));
         } else {

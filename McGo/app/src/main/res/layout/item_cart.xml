@@ -92,7 +92,7 @@
                 android:layout_marginStart="@dimen/activity_x_small_horizontal_margin"
                 android:layout_weight="33"
                 android:gravity="center_horizontal"
-                android:text="@string/item_count" />
+                android:text="@string/item_quantity" />
 
             <Button
                 android:id="@+id/item_plus_button"

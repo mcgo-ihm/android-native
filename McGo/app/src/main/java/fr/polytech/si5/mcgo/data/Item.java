@@ -46,6 +46,15 @@ public final class Item {
         mQuickOrderSelect = false;
     }
 
+    public Item(Item item) {
+        this.mId = item.getId();
+        this.mName = item.getName();
+        this.mDescription = item.getDescription();
+        this.mPrice = item.getPrice();
+        this.mIconId = item.getIconId();
+        this.mQuantity = item.getQuantity();
+    }
+
     @NonNull
     public Integer getId() {
         return mId;
@@ -83,6 +92,14 @@ public final class Item {
 
     public void setQuantity(int quantity) {
         mQuantity = quantity;
+    }
+
+    public void increaseQuantity() {
+        mQuantity++;
+    }
+
+    public void decreaseQuantity() {
+        mQuantity--;
     }
 
     public void quickOrderSelect() {

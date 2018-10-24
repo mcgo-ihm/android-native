@@ -57,7 +57,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="@dimen/activity_small_vertical_margin"
             android:gravity="center_horizontal"
-            android:text="@string/item_qty" />
+            android:text="@string/order_item_quantity" />
 
         <TextView
             android:id="@+id/item_unit_price"

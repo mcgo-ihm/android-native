@@ -1,7 +1,9 @@
 package fr.polytech.si5.mcgo.items;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -11,15 +13,15 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import fr.polytech.si5.mcgo.QuickOrderActivity;
+import fr.polytech.si5.mcgo.QuickOrderPropertyActivity;
 import fr.polytech.si5.mcgo.R;
 import fr.polytech.si5.mcgo.Utils.ActivityUtils;
 import fr.polytech.si5.mcgo.data.Constants;
 import fr.polytech.si5.mcgo.data.local.ItemsDataSource;
-import fr.polytech.si5.mcgo.favorites.FavoritesActivity;
 import fr.polytech.si5.mcgo.orders.OrdersActivity;
+import fr.polytech.si5.mcgo.quickorder.QuickOrderActivity;
 
-public class ItemsActivity extends QuickOrderActivity {
+public class ItemsActivity extends QuickOrderPropertyActivity {
 
     private DrawerLayout mDrawerLayout;
     private ItemsPresenter mItemsPresenter;
@@ -66,10 +68,11 @@ public class ItemsActivity extends QuickOrderActivity {
         fab.hide();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onStart() {
         super.onStart();
-        mItemsPresenter.loadDataSource(ItemsDataSource.itemsDataSource);
+        mItemsPresenter.loadDataSource(ItemsDataSource.ITEMS_DATA_SOURCE);
     }
 
     @Override
@@ -100,8 +103,8 @@ public class ItemsActivity extends QuickOrderActivity {
                             intent = new Intent(ItemsActivity.this, OrdersActivity.class);
                             startActivity(intent);
                             break;
-                        case R.id.favorite_navigation_menu_item:
-                            intent = new Intent(ItemsActivity.this, FavoritesActivity.class);
+                        case R.id.quick_order_navigation_menu_item:
+                            intent = new Intent(ItemsActivity.this, QuickOrderActivity.class);
                             startActivity(intent);
                             break;
                         default:
