@@ -20,11 +20,15 @@ import fr.polytech.si5.mcgo.data.Constants;
 import fr.polytech.si5.mcgo.data.local.ItemsDataSource;
 import fr.polytech.si5.mcgo.orders.OrdersActivity;
 import fr.polytech.si5.mcgo.quickorder.QuickOrderActivity;
+import fr.polytech.si5.mcgo.sensors.GPSTracker;
 
 public class ItemsActivity extends QuickOrderPropertyActivity {
 
     private DrawerLayout mDrawerLayout;
     private ItemsPresenter mItemsPresenter;
+
+    /* Location Attributes */
+    private GPSTracker gpsTracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +70,8 @@ public class ItemsActivity extends QuickOrderPropertyActivity {
         fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action",
                 Snackbar.LENGTH_LONG).setAction("Action", null).show());
         fab.hide();
+
+        gpsTracker = new GPSTracker(this);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
