@@ -20,8 +20,8 @@ import fr.polytech.si5.mcgo.data.UserSettings;
 import fr.polytech.si5.mcgo.data.local.ItemsDataSource;
 import fr.polytech.si5.mcgo.sensors.ShakeDetector;
 
-import static fr.polytech.si5.mcgo.Utils.OrderUtils.confirmCart;
-import static fr.polytech.si5.mcgo.Utils.OrderUtils.performQuickOrder;
+import static fr.polytech.si5.mcgo.utils.OrderUtils.confirmCart;
+import static fr.polytech.si5.mcgo.utils.OrderUtils.performQuickOrder;
 
 public abstract class QuickOrderPropertyActivity extends AppCompatActivity {
 

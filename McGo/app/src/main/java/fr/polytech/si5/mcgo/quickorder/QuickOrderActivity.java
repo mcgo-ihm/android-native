@@ -9,12 +9,12 @@ import android.view.View;
 
 import fr.polytech.si5.mcgo.QuickOrderPropertyActivity;
 import fr.polytech.si5.mcgo.R;
-import fr.polytech.si5.mcgo.Utils.ActivityUtils;
 import fr.polytech.si5.mcgo.cart.CartFragment;
 import fr.polytech.si5.mcgo.cart.CartPresenter;
 import fr.polytech.si5.mcgo.data.Constants;
 import fr.polytech.si5.mcgo.data.Order;
 import fr.polytech.si5.mcgo.data.local.ItemsDataSource;
+import fr.polytech.si5.mcgo.utils.ActivityUtils;
 
 public class QuickOrderActivity extends QuickOrderPropertyActivity {
 

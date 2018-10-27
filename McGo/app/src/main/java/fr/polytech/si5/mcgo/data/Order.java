@@ -1,6 +1,7 @@
 package fr.polytech.si5.mcgo.data;
 
 import android.os.Build;
+import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 
@@ -16,11 +17,18 @@ import fr.polytech.si5.mcgo.orders.ParentListItem;
 
 public final class Order implements ParentListItem {
 
+    // Useless
+    public enum OrderState {
+        IN_PROGRESS, DELIVERED
+    }
+
     private int mId;
     private LocalDateTime mDate;
     private List<Item> mListOfItems;
     private float mPrice;
     private int mTotalItemsNumber;
+
+    private CountDownTimer cdt;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public Order() {
@@ -31,6 +39,7 @@ public final class Order implements ParentListItem {
         mTotalItemsNumber = 0;
         state = OrderState.IN_PROGRESS;
     }
+
     private OrderState state;
 
     // Default constructor
@@ -42,6 +51,7 @@ public final class Order implements ParentListItem {
         this.mPrice = order.getPrice();
         this.mTotalItemsNumber = order.getTotalItemsNumber();
         this.state = order.getState();
+        this.cdt = order.getCdt();
     }
 
     public void setDate(LocalDateTime date) {
@@ -102,6 +112,10 @@ public final class Order implements ParentListItem {
             newItem.setQuantity(1);
             mListOfItems.add(newItem);
         }
+    }
+
+    public CountDownTimer getCdt() {
+        return cdt;
     }
 
     // Business
@@ -171,15 +185,20 @@ public final class Order implements ParentListItem {
         state = OrderState.IN_PROGRESS;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Order order = (Order) o;
-        return Objects.equal(mId, order.mId) &&
-                Objects.equal(mDate, order.mDate) &&
-                Objects.equal(mListOfItems, order.mListOfItems) &&
-                Objects.equal(mPrice, order.mPrice);
+    public void startTimer(int millis) {
+        cdt = new CountDownTimer(millis, millis / 2) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            @Override
+            public void onFinish() {
+
+            }
+        };
+
+        cdt.start();
     }
 
     // Useless
@@ -208,13 +227,19 @@ public final class Order implements ParentListItem {
     // Equals
 
     @Override
-    public int hashCode() {
-        return Objects.hashCode(mId, mDate, mListOfItems, mPrice);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Order order = (Order) o;
+        return Objects.equal(mId, order.mId) &&
+                Objects.equal(mDate, order.mDate) &&
+                Objects.equal(mListOfItems, order.mListOfItems) &&
+                Objects.equal(mPrice, order.mPrice);
     }
 
-    // Useless
-    public enum OrderState {
-        IN_PROGRESS, DELIVERED
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(mId, mDate, mListOfItems, mPrice);
     }
 
     @Override

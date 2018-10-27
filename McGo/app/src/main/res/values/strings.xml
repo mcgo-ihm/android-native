@@ -50,4 +50,8 @@
     <string name="preferences_quick_order_main_second_dependant_title">Audio feedback</string>
     <string name="preferences_quick_order_main_second_dependant_summary">Enable audio feedback when quick order is performed</string>
 
+    <!-- Notifications -->
+    <string name="notification_channel_name">BuzzerChannel</string>
+    <string name="notification_channel_description">Buzzer system</string>
+
 </resources>

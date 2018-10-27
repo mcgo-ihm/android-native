@@ -29,14 +29,14 @@ import java.util.List;
 import java.util.Locale;
 
 import fr.polytech.si5.mcgo.R;
-import fr.polytech.si5.mcgo.Utils.ActivityUtils;
-import fr.polytech.si5.mcgo.Utils.OrderUtils;
 import fr.polytech.si5.mcgo.cart.CartActivity;
 import fr.polytech.si5.mcgo.data.Constants;
 import fr.polytech.si5.mcgo.data.Item;
 import fr.polytech.si5.mcgo.data.local.ItemsDataSource;
 import fr.polytech.si5.mcgo.quickorder.QuickOrderActivity;
 import fr.polytech.si5.mcgo.settings.UserSettingsActivity;
+import fr.polytech.si5.mcgo.utils.ActivityUtils;
+import fr.polytech.si5.mcgo.utils.OrderUtils;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

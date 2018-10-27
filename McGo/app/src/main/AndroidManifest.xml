@@ -28,6 +28,25 @@
         android:launchMode="singleInstance"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <service
+            android:name="fr.polytech.si5.mcgo.utils.NotificationService"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="fr.polytech.si5.mcgo.utils.NotificationService" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name="fr.polytech.si5.mcgo.sensors.GPSTracker"
+            android:label="@string/app_name"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="fr.polytech.si5.mcgo.sensors.GPSTracker" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </service>
+
         <activity
             android:name=".items.ItemsActivity"
             android:label="@string/app_name"

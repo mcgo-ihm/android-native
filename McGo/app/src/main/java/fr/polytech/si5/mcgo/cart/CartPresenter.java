@@ -5,9 +5,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.widget.TextView;
 
-import fr.polytech.si5.mcgo.Utils.OrderUtils;
 import fr.polytech.si5.mcgo.data.Item;
 import fr.polytech.si5.mcgo.data.Order;
+import fr.polytech.si5.mcgo.utils.OrderUtils;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

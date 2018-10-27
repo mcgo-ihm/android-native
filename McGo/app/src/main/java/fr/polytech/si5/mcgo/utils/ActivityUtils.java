@@ -1,4 +1,4 @@
-package fr.polytech.si5.mcgo.Utils;
+package fr.polytech.si5.mcgo.utils;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;

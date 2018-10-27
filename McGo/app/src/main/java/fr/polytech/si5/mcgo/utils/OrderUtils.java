@@ -1,4 +1,4 @@
-package fr.polytech.si5.mcgo.Utils;
+package fr.polytech.si5.mcgo.utils;
 
 import android.os.Build;
 import android.support.annotation.RequiresApi;
@@ -22,8 +22,14 @@ public class OrderUtils {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static void confirmCart(Order order) {
         order.setDate(LocalDateTime.now());
+        order.startTimer(estimateOrderTime(order));
         ItemsDataSource.ORDERS_IN_PROGRESS.add(new Order(order));
         order = new Order();
+    }
+
+    private static int estimateOrderTime(Order order) {
+        // Mock
+        return 60000;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
