@@ -39,6 +39,9 @@ public final class Order implements ParentListItem {
         mListOfItems = new ArrayList<>();
         mPrice = 0;
         mTotalItemsNumber = 0;
+        location = new Location("");
+        location.setLatitude(45.0);
+        location.setLongitude(7.0);
         state = OrderState.IN_PROGRESS;
     }
 
@@ -193,6 +196,7 @@ public final class Order implements ParentListItem {
         mListOfItems.clear();
         mTotalItemsNumber = 0;
         mPrice = 0f;
+        location = new Location("");
         state = OrderState.IN_PROGRESS;
     }
 

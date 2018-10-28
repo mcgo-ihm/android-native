@@ -1,4 +1,4 @@
-package fr.polytech.si5.mcgo.notification;
+package fr.polytech.si5.mcgo.notifications;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;

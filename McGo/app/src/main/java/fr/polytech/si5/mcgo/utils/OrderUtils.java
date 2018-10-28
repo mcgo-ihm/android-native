@@ -18,6 +18,7 @@ public class OrderUtils {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static void confirmCart() {
         ItemsDataSource.cart.setDate(LocalDateTime.now());
+        ItemsDataSource.cart.startTimer(estimateOrderTime(ItemsDataSource.cart));
         // For testing purpose I'll just set a known location
         //ItemsDataSource.cart.setLocation(getRandomRestaurantLocation());
         ItemsDataSource.cart.setLocation(DataSource.RESTAURANT_3);
@@ -53,6 +54,11 @@ public class OrderUtils {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static void performQuickOrder() {
         ItemsDataSource.quickOrder.setDate(LocalDateTime.now());
-        ItemsDataSource.ORDERS_IN_PROGRESS.add(new Order(ItemsDataSource.quickOrder));
+        //ItemsDataSource.quickOrder.setLocation(getRandomRestaurantLocation());
+        ItemsDataSource.quickOrder.setLocation(DataSource.RESTAURANT_3);
+
+        Order newOrder = new Order(ItemsDataSource.quickOrder);
+        newOrder.startTimer(estimateOrderTime(newOrder));
+        ItemsDataSource.ORDERS_IN_PROGRESS.add(newOrder);
     }
 }

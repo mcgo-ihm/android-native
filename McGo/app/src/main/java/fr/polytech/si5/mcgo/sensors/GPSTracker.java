@@ -30,7 +30,7 @@ import fr.polytech.si5.mcgo.data.Order;
 import fr.polytech.si5.mcgo.data.local.DataSource;
 import fr.polytech.si5.mcgo.data.local.ItemsDataSource;
 import fr.polytech.si5.mcgo.items.ItemsActivity;
-import fr.polytech.si5.mcgo.notification.NotificationActivity;
+import fr.polytech.si5.mcgo.notifications.NotificationActivity;
 import fr.polytech.si5.mcgo.orders.OrdersActivity;
 
 import static fr.polytech.si5.mcgo.data.Constants.BUZZER_CHANNEL_ID;

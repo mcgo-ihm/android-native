@@ -36,5 +36,4 @@ public class ItemsFragmentTests {
         // Then the presenter is set to the view
         verify(mItemsView).setPresenter(mItemsPresenter);
     }
-
 }
