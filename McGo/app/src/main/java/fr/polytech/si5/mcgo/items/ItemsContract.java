@@ -25,6 +25,8 @@ public interface ItemsContract {
 
         void addToCart();
 
+        boolean isActive();
+
     }
 
     interface Presenter extends BasePresenter {

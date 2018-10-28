@@ -313,6 +313,11 @@ public class ItemsFragment extends Fragment implements ItemsContract.View {
         ActivityUtils.setBadgeCount(getContext(), mIcon, ItemsDataSource.cart.getTotalItemsNumber());
     }
 
+    @Override
+    public boolean isActive() {
+        return isAdded();
+    }
+
     public interface ItemListener {
 
         void onItemClick(Item clickedItem);
