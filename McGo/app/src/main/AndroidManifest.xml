@@ -88,6 +88,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".items.ItemsActivity" />
         </activity>
+        <activity
+            android:name=".notification.NotificationActivity"
+            android:excludeFromRecents="true"
+            android:taskAffinity="">
+
+        </activity>
     </application>
 
 </manifest>

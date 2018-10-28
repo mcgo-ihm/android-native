@@ -5,24 +5,61 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
+import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.SwitchPreference;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import fr.polytech.si5.mcgo.R;
-import fr.polytech.si5.mcgo.data.UserSettings;
+import fr.polytech.si5.mcgo.data.Constants.UserSettings;
 
 public class UserSettingsFragment extends PreferenceFragment {
 
     private SharedPreferences prefs;
     private Activity activity;
+    private List<CheckBoxPreference> checkBoxPreferences;
+    private Preference.OnPreferenceClickListener clickListener;
+    private Preference.OnPreferenceChangeListener changeListener;
+    //private ListPreference mNotificationPrioritiesListPreference;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        int xmlId = R.xml.user_settings_preferences;
-        addPreferencesFromResource(xmlId);
+        int xmlPref = R.xml.user_settings_preferences;
+        addPreferencesFromResource(xmlPref);
+        //mNotificationPrioritiesListPreference = (ListPreference) getPreferenceScreen().findPreference(UserSettings.NOTIFICATION_PRIORITY_LIST_KEY);
+        checkBoxPreferences = new ArrayList<>();
+
+        clickListener = new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                for (CheckBoxPreference cbp : checkBoxPreferences) {
+                    if (!cbp.getKey().equals(preference.getKey()) && cbp.isChecked()) {
+                        cbp.setChecked(false);
+                    }
+
+                    if (cbp.getKey().equals(preference.getKey()) && !cbp.isChecked()) {
+                        cbp.setChecked(true);
+                    }
+                }
+                return true;
+            }
+        };
+
+        changeListener = new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                if ((Boolean) newValue) {
+                    prefs.edit().putString(UserSettings.NOTIFICATION_PRIORITY_VALUE, preference.getKey()).apply();
+                }
+
+                return true;
+            }
+        };
     }
 
     @Override
@@ -35,7 +72,7 @@ public class UserSettingsFragment extends PreferenceFragment {
 
     private void setTitle() {
         String title = getString(R.string.preferences_activity_label);
-        Toolbar toolbar = ((Toolbar) getActivity().findViewById(R.id.toolbar));
+        Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
 
         if (toolbar != null) {
             toolbar.setTitle(title);
@@ -58,7 +95,6 @@ public class UserSettingsFragment extends PreferenceFragment {
 
         // Quick Order enable
         final SwitchPreference quickOrderSwitchPreference = (SwitchPreference) findPreference("main");
-
         if (quickOrderSwitchPreference != null) {
             quickOrderSwitchPreference.setOnPreferenceChangeListener((preference, newValue) -> {
                 prefs.edit().putBoolean(UserSettings.QUICK_ORDER_ENABLE, (Boolean) newValue).apply();
@@ -82,6 +118,27 @@ public class UserSettingsFragment extends PreferenceFragment {
                 prefs.edit().putBoolean(UserSettings.QUICK_ORDER_AUDIO_FEEDBACK, (Boolean) newValue).apply();
                 return true;
             });
+        }
+
+        // Notification Priorities
+
+        final CheckBoxPreference highPriority = (CheckBoxPreference) findPreference("High");
+        final CheckBoxPreference defaultPriority = (CheckBoxPreference) findPreference("Default");
+        final CheckBoxPreference lowPriority = (CheckBoxPreference) findPreference("Low");
+        final CheckBoxPreference minPriority = (CheckBoxPreference) findPreference("Min");
+        final CheckBoxPreference nonePriority = (CheckBoxPreference) findPreference("None");
+
+        if (checkBoxPreferences.isEmpty()) {
+            checkBoxPreferences.add(highPriority);
+            checkBoxPreferences.add(defaultPriority);
+            checkBoxPreferences.add(lowPriority);
+            checkBoxPreferences.add(minPriority);
+            checkBoxPreferences.add(nonePriority);
+        }
+
+        for (CheckBoxPreference cbp : checkBoxPreferences) {
+            cbp.setOnPreferenceChangeListener(changeListener);
+            cbp.setOnPreferenceClickListener(clickListener);
         }
     }
 }

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="notification_priorities">notification_priorities_values
+        <item>@string/preferences_notification_high_priority_title</item>
+        <item>@string/preferences_notification_default_priority_title</item>
+        <item>@string/preferences_notification_low_priority_title</item>
+        <item>@string/preferences_notification_min_priority_title</item>
+        <item>@string/preferences_notification_none_priority_title</item>
+    </string-array>
+
+    <string-array name="notification_priorities_values">
+        <item>@string/preferences_notification_high_priority_summary</item>
+        <item>@string/preferences_notification_default_priority_summary</item>
+        <item>@string/preferences_notification_low_priority_summary</item>
+        <item>@string/preferences_notification_min_priority_summary</item>
+        <item>@string/preferences_notification_none_priority_summary</item>
+    </string-array>
+
+</resources>

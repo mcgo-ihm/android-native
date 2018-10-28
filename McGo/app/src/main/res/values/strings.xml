@@ -49,6 +49,18 @@
     <string name="preferences_quick_order_main_first_dependant_summary">Enable vibration feedback when quick order is performed</string>
     <string name="preferences_quick_order_main_second_dependant_title">Audio feedback</string>
     <string name="preferences_quick_order_main_second_dependant_summary">Enable audio feedback when quick order is performed</string>
+    <string name="preferences_notification_priority_title">Notification Priority</string>
+    <string name="preferences_notification_priority_summary">Change the notification priority according to your preferences</string>
+    <string name="preferences_notification_high_priority_title">High</string>
+    <string name="preferences_notification_high_priority_summary">Higher notification importance: shows everywhere, makes noise and peeks and a heads-up appears</string>
+    <string name="preferences_notification_default_priority_title">Default</string>
+    <string name="preferences_notification_default_priority_summary">Shows everywhere, makes noise, but does not visually intrude</string>
+    <string name="preferences_notification_low_priority_title">Low</string>
+    <string name="preferences_notification_low_priority_summary">Shows everywhere, but is not intrusive</string>
+    <string name="preferences_notification_min_priority_title">Min</string>
+    <string name="preferences_notification_min_priority_summary">Only shows in the shade, below the fold</string>
+    <string name="preferences_notification_none_priority_title">None</string>
+    <string name="preferences_notification_none_priority_summary">No importance: does not show in the shade</string>
 
     <!-- Notifications -->
     <string name="notification_channel_name">BuzzerChannel</string>

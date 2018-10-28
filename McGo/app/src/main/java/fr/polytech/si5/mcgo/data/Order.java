@@ -1,5 +1,6 @@
 package fr.polytech.si5.mcgo.data;
 
+import android.location.Location;
 import android.os.Build;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
@@ -27,6 +28,7 @@ public final class Order implements ParentListItem {
     private List<Item> mListOfItems;
     private float mPrice;
     private int mTotalItemsNumber;
+    private Location location;
 
     private CountDownTimer cdt;
 
@@ -51,6 +53,7 @@ public final class Order implements ParentListItem {
         this.mPrice = order.getPrice();
         this.mTotalItemsNumber = order.getTotalItemsNumber();
         this.state = order.getState();
+        this.location = order.getLocation();
         this.cdt = order.getCdt();
     }
 
@@ -112,6 +115,14 @@ public final class Order implements ParentListItem {
             newItem.setQuantity(1);
             mListOfItems.add(newItem);
         }
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     public CountDownTimer getCdt() {

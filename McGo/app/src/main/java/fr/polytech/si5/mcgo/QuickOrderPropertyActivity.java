@@ -15,8 +15,8 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.ViewGroup;
 
-import fr.polytech.si5.mcgo.data.Sensors;
-import fr.polytech.si5.mcgo.data.UserSettings;
+import fr.polytech.si5.mcgo.data.Constants.Sensors;
+import fr.polytech.si5.mcgo.data.Constants.UserSettings;
 import fr.polytech.si5.mcgo.data.local.ItemsDataSource;
 import fr.polytech.si5.mcgo.sensors.ShakeDetector;
 

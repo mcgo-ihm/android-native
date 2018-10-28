@@ -29,5 +29,4 @@ public final class DataSource {
         RESTAURANT_5.setLatitude(43.6184772);
         RESTAURANT_5.setLongitude(7.0756282);
     }
-
 }

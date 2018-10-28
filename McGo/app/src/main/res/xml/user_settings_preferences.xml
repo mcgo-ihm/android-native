@@ -25,6 +25,38 @@
             android:title="@string/preferences_quick_order_main_second_dependant_title" />
     </PreferenceCategory>
 
-    <!--Any other categories include here-->
+    <PreferenceCategory
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:key="notification_priority_preferences"
+        android:summary="@string/preferences_notification_priority_summary"
+        android:title="@string/preferences_notification_priority_title">
+        <!--<ListPreference
+            android:defaultValue="0"
+            android:entries="@array/notification_priorities"
+            android:entryValues="@array/notification_priorities_values"
+            android:key="notificationPriorities"
+            android:title="Pick a priority" />-->
+        <CheckBoxPreference
+            android:key="@string/preferences_notification_high_priority_title"
+            android:summary="@string/preferences_notification_high_priority_summary"
+            android:title="@string/preferences_notification_high_priority_title" />
+        <CheckBoxPreference
+            android:key="@string/preferences_notification_default_priority_title"
+            android:summary="@string/preferences_notification_default_priority_summary"
+            android:title="@string/preferences_notification_default_priority_title" />
+        <CheckBoxPreference
+            android:key="@string/preferences_notification_low_priority_title"
+            android:summary="@string/preferences_notification_low_priority_summary"
+            android:title="@string/preferences_notification_low_priority_title" />
+        <CheckBoxPreference
+            android:key="@string/preferences_notification_min_priority_title"
+            android:summary="@string/preferences_notification_min_priority_summary"
+            android:title="@string/preferences_notification_min_priority_title" />
+        <CheckBoxPreference
+            android:key="@string/preferences_notification_none_priority_title"
+            android:summary="@string/preferences_notification_none_priority_summary"
+            android:title="@string/preferences_notification_none_priority_title" />
+    </PreferenceCategory>
 
 </PreferenceScreen>
