@@ -121,20 +121,26 @@ public abstract class QuickOrderPropertyActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void handleShakeEvent(int count) {
         if (count == 5) {
-            if (prefs.getBoolean(UserSettings.QUICK_ORDER_VIBRATION_FEEDBACK, false)) {
-                vibrate();
-            }
-            if (prefs.getBoolean(UserSettings.QUICK_ORDER_AUDIO_FEEDBACK, false)) {
-                playAudioFeedback();
-            }
+            if (ItemsDataSource.cart.getTotalItemsNumber() != 0 || ItemsDataSource.quickOrder.getTotalItemsNumber() != 0) {
+                if (prefs.getBoolean(UserSettings.QUICK_ORDER_VIBRATION_FEEDBACK, false)) {
+                    vibrate();
+                }
+                if (prefs.getBoolean(UserSettings.QUICK_ORDER_AUDIO_FEEDBACK, false)) {
+                    playAudioFeedback();
+                }
 
-            if (ItemsDataSource.cart.getTotalItemsNumber() != 0) {
-                confirmCart();
-            } else if (ItemsDataSource.quickOrder.getTotalItemsNumber() != 0) {
-                performQuickOrder();
+                if (ItemsDataSource.cart.getTotalItemsNumber() != 0) {
+                    confirmCart();
+                } else if (ItemsDataSource.quickOrder.getTotalItemsNumber() != 0) {
+                    performQuickOrder();
+                }
+
+                Snackbar.make(((ViewGroup) this.findViewById(android.R.id.content)).getChildAt(0),
+                        "Quick Order Succeeded", Snackbar.LENGTH_LONG).show();
+            } else {
+                Snackbar.make(((ViewGroup) this.findViewById(android.R.id.content)).getChildAt(0),
+                        "Nothing to order. Add items to cart or set a quick order", Snackbar.LENGTH_LONG).show();
             }
-            Snackbar.make(((ViewGroup) this.findViewById(android.R.id.content)).getChildAt(0),
-                    "Quick Order Succeeded", Snackbar.LENGTH_LONG).show();
         }
     }
 
