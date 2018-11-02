@@ -1,8 +1,10 @@
 package fr.polytech.si5.mcgo.settings;
 
 import android.app.Activity;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
@@ -15,7 +17,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.polytech.si5.mcgo.R;
+import fr.polytech.si5.mcgo.data.Constants;
 import fr.polytech.si5.mcgo.data.Constants.UserSettings;
+
+import static fr.polytech.si5.mcgo.data.local.DataSource.CHANNELS;
+import static fr.polytech.si5.mcgo.data.local.DataSource.CURRENT_NOTIFICATION_CHANNEL;
 
 public class UserSettingsFragment extends PreferenceFragment {
 
@@ -24,14 +30,12 @@ public class UserSettingsFragment extends PreferenceFragment {
     private List<CheckBoxPreference> checkBoxPreferences;
     private Preference.OnPreferenceClickListener clickListener;
     private Preference.OnPreferenceChangeListener changeListener;
-    //private ListPreference mNotificationPrioritiesListPreference;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         int xmlPref = R.xml.user_settings_preferences;
         addPreferencesFromResource(xmlPref);
-        //mNotificationPrioritiesListPreference = (ListPreference) getPreferenceScreen().findPreference(UserSettings.NOTIFICATION_PRIORITY_LIST_KEY);
         checkBoxPreferences = new ArrayList<>();
 
         clickListener = new Preference.OnPreferenceClickListener() {
@@ -55,6 +59,18 @@ public class UserSettingsFragment extends PreferenceFragment {
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 if ((Boolean) newValue) {
                     prefs.edit().putString(UserSettings.NOTIFICATION_PRIORITY_VALUE, preference.getKey()).apply();
+                    NotificationManager notificationManager = null;
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        notificationManager = activity.getSystemService(NotificationManager.class);
+
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            int importance = Constants.UserSettings.Priority.match(
+                                    prefs.getString(Constants.UserSettings.NOTIFICATION_PRIORITY_VALUE, "High"));
+                            notificationManager.deleteNotificationChannel(CHANNELS[importance].getId());
+                            createNotificationChannel();
+                        }
+                    }
                 }
 
                 return true;
@@ -139,6 +155,16 @@ public class UserSettingsFragment extends PreferenceFragment {
         for (CheckBoxPreference cbp : checkBoxPreferences) {
             cbp.setOnPreferenceChangeListener(changeListener);
             cbp.setOnPreferenceClickListener(clickListener);
+        }
+    }
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            int importance = Constants.UserSettings.Priority.match(
+                    prefs.getString(Constants.UserSettings.NOTIFICATION_PRIORITY_VALUE, "High"));
+            NotificationManager notificationManager = activity.getSystemService(NotificationManager.class);
+            CURRENT_NOTIFICATION_CHANNEL = CHANNELS[importance].getId();
+            notificationManager.createNotificationChannel(CHANNELS[importance]);
         }
     }
 }

@@ -7,6 +7,11 @@ public interface Constants {
 
     /* Notifications */
     String BUZZER_CHANNEL_ID = "buzzer";
+    String BUZZER_CHANNEL_HIGH_ID = "buzzer_high";
+    String BUZZER_CHANNEL_DEFAULT_ID = "buzzer_default";
+    String BUZZER_CHANNEL_LOW_ID = "buzzer_low";
+    String BUZZER_CHANNEL_MIN_ID = "buzzer_min";
+    String BUZZER_CHANNEL_NONE_ID = "buzzer_none";
     String FRAGMENT_BUNDLE_QUICK_ORDER_KEY = "quickOrderFragment";
     String FRAGMENT_BUNDLE_CAN_SEE_CART_KEY = "canSeeCart";
 
@@ -16,7 +21,6 @@ public interface Constants {
         String QUICK_ORDER_ENABLE = "quickOrderEnable";
         String QUICK_ORDER_VIBRATION_FEEDBACK = "quickOrderVibrationFeedback";
         String QUICK_ORDER_AUDIO_FEEDBACK = "quickOrderAudioFeedback";
-        //String NOTIFICATION_PRIORITY_LIST_KEY = "notificationPriorities";
         String NOTIFICATION_PRIORITY_VALUE = "notificationPriority";
 
         enum Priority {

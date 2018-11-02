@@ -2,7 +2,6 @@ package fr.polytech.si5.mcgo.sensors;
 
 import android.app.AlertDialog;
 import android.app.Notification;
-import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -35,6 +34,8 @@ import fr.polytech.si5.mcgo.orders.OrdersActivity;
 
 import static fr.polytech.si5.mcgo.data.Constants.BUZZER_CHANNEL_ID;
 import static fr.polytech.si5.mcgo.data.Constants.UserSettings;
+import static fr.polytech.si5.mcgo.data.local.DataSource.CHANNELS;
+import static fr.polytech.si5.mcgo.data.local.DataSource.CURRENT_NOTIFICATION_CHANNEL;
 
 public class GPSTracker extends Service implements LocationListener {
 
@@ -115,15 +116,9 @@ public class GPSTracker extends Service implements LocationListener {
 
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = getString(R.string.notification_channel_name);
-            String description = getString(R.string.notification_channel_description);
             int importance = UserSettings.Priority.match(prefs.getString(UserSettings.NOTIFICATION_PRIORITY_VALUE, "High"));
-            NotificationChannel channel = new NotificationChannel(BUZZER_CHANNEL_ID, name, importance);
-            channel.setDescription(description);
-            // Register the channel with the system; you can't change the importance
-            // or other notification behaviors after this
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
+            notificationManager.createNotificationChannel(CHANNELS[importance]);
         }
     }
 
@@ -245,10 +240,14 @@ public class GPSTracker extends Service implements LocationListener {
         Log.e(this.getClass().getName(), "GPS Location - lat=" + latitude + ", lon=" + longitude);
 
         if (!DataSource.BUZZER && checkProximity(location)) {
+            buzzerOnNotificationBuilder.setChannelId(CURRENT_NOTIFICATION_CHANNEL);
+            buzzerOnNotification = buzzerOnNotificationBuilder.build();
             notificationManager.notify(buzzerOnNotificationID, buzzerOnNotification);
             DataSource.BUZZER = true;
             Log.e(this.getClass().getName(), "Buzzer state=" + DataSource.BUZZER);
         } else if (DataSource.BUZZER && !checkProximity(location)) {
+            buzzerOffNotificationBuilder.setChannelId(CURRENT_NOTIFICATION_CHANNEL);
+            buzzerOffNotification = buzzerOffNotificationBuilder.build();
             notificationManager.notify(buzzerOffNotificationID, buzzerOffNotification);
             DataSource.BUZZER = false;
             Log.e(this.getClass().getName(), "Buzzer state=" + DataSource.BUZZER);
