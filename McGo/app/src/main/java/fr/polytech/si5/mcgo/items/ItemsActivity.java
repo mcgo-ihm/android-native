@@ -6,9 +6,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -78,10 +76,10 @@ public class ItemsActivity extends QuickOrderPropertyActivity {
         // Create the presenter.
         mItemsPresenter = new ItemsPresenter(itemsFragment);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action",
                 Snackbar.LENGTH_LONG).setAction("Action", null).show());
-        fab.hide();
+        fab.hide();*/
 
         checkPermissions();
         //gpsTracker = new GPSTracker(this);

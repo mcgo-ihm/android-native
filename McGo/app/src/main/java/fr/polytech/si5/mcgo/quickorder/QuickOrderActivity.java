@@ -37,7 +37,7 @@ public class QuickOrderActivity extends QuickOrderPropertyActivity {
 
         this.cart = ItemsDataSource.quickOrder;
 
-        // Set up items fragment.
+        // Set up cart fragment.
         CartFragment cartFragment = (CartFragment) getSupportFragmentManager().findFragmentById(R.id.content_frame);
 
         if (cartFragment == null) {

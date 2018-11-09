@@ -1,5 +1,6 @@
 package fr.polytech.si5.mcgo.sensors;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -122,6 +123,7 @@ public class GPSTracker extends Service implements LocationListener {
         }
     }
 
+    @SuppressLint("MissingPermission")
     public Location getLocation() {
         try {
             locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
